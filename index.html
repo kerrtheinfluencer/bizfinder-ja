@@ -10,10 +10,10 @@
             font-family: 'Poppins', Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            color: #fff;
+            background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 100%);
+            color: #2c3e50;
             overflow-x: hidden;
-            background-image: url('data:image/svg+xml,%3Csvg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%239C92AC" fill-opacity="0.1"%3E%3Cpath d="M0 0h20v20H0z"/%3E%3Cpath d="M10 10l5-5-5-5-5 5z"/%3E%3C/g%3E%3C/svg%3E');
+            background-image: url('data:image/svg+xml,%3Csvg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%23ffffff" fill-opacity="0.1"%3E%3Cpath d="M0 0h20v20H0z"/%3E%3Cpath d="M10 10l5-5-5-5-5 5z"/%3E%3C/g%3E%3C/svg%3E');
         }
         .container {
             max-width: 900px;
@@ -23,36 +23,40 @@
         .header {
             text-align: center;
             padding: 40px 20px;
-            background: linear-gradient(90deg, #27ae60 0%, #2ecc71 100%);
-            border-bottom: 4px solid #219653;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            background: linear-gradient(90deg, #ff6b6b 0%, #4ecdc4 100%);
+            border-bottom: 4px solid #ff8a8a;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
             animation: headerGlow 2s infinite alternate;
         }
         @keyframes headerGlow {
-            0% { box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
-            100% { box-shadow: 0 6px 30px rgba(39, 174, 96, 0.5); }
+            0% { box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
+            100% { box-shadow: 0 6px 30px rgba(255, 107, 107, 0.5); }
         }
         .header h1 {
             margin: 0;
             font-size: 3em;
-            text-shadow: 3px 3px 10px rgba(0,0,0,0.5);
+            text-shadow: 3px 3px 10px rgba(0,0,0,0.3);
+            color: #fff;
         }
         .nav {
             text-align: center;
             margin: 20px 0;
             padding: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
         .nav a {
             margin: 0 25px;
             text-decoration: none;
-            color: #fff;
+            color: #4ecdc4;
             font-weight: 600;
             font-size: 1.1em;
             transition: transform 0.3s, color 0.3s;
         }
         .nav a:hover {
             transform: scale(1.1);
-            color: #e74c3c;
+            color: #ff6b6b;
         }
         .feed {
             padding: 20px 0;
@@ -80,7 +84,7 @@
         .business-card h3 {
             margin: 0 0 10px;
             font-size: 1.8em;
-            color: #e74c3c;
+            color: #ff6b6b;
             display: inline-block;
         }
         .business-card .fire {
@@ -99,28 +103,33 @@
             border-radius: 10px;
             margin: 10px 0;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        .business-card img:hover {
+            transform: scale(1.05);
         }
         .business-card p {
             margin: 8px 0;
             font-size: 1.1em;
+            color: #2c3e50;
         }
         .contact-links a {
             margin-right: 20px;
-            color: #2980b9;
+            color: #4ecdc4;
             text-decoration: none;
             font-size: 1.2em;
             transition: transform 0.3s, color 0.3s;
         }
         .contact-links a:hover {
             transform: scale(1.2);
-            color: #e74c3c;
+            color: #ff6b6b;
         }
         .views {
             font-weight: bold;
-            color: #27ae60;
+            color: #ff8a8a;
         }
         button {
-            background: linear-gradient(90deg, #27ae60, #2ecc71);
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
             color: white;
             padding: 10px 20px;
             border: none;
@@ -172,7 +181,7 @@
             display: none;
         }
         .discount-message {
-            color: #e74c3c;
+            color: #ff6b6b;
             font-weight: bold;
             margin-top: 15px;
             background: #fff5f5;
@@ -289,8 +298,39 @@
             }, 2000);
         });
 
-        // Business data
-        let businesses = JSON.parse(localStorage.getItem('businesses')) || [];
+        // Business data (30 dummy businesses)
+        let businesses = JSON.parse(localStorage.getItem('businesses')) || [
+            { id: 1, name: "Taste of Mobay", category: "Food & Drinks", productName: "Jerk Chicken", description: "Authentic jerk chicken and patties.", whatsapp: "8765551234", instagram: "tasteofmobay", location: "Montego Bay", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 150 },
+            { id: 2, name: "Rasta Threads", category: "Fashion & Accessories", productName: "Rasta Tee", description: "Vibrant Rasta-themed t-shirts.", whatsapp: "8765551235", instagram: "rastathreads", location: "Kingston", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 120 },
+            { id: 3, name: "TechTrend JA", category: "Tech & Electronics", productName: "Wireless Earbuds", description: "High-quality wireless earbuds.", whatsapp: "8765551236", instagram: "techtrendja", location: "Ocho Rios", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 90 },
+            { id: 4, name: "Island Kitchen Co.", category: "Home & Kitchen", productName: "Blender", description: "Powerful blender for smoothies.", whatsapp: "8765551237", instagram: "islandkitchen", location: "Negril", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 80 },
+            { id: 5, name: "JAM Beauty", category: "Beauty & Personal Care", productName: "Coconut Oil Soap", description: "Natural coconut oil soap.", whatsapp: "8765551238", instagram: "jambbeauty", location: "Portmore", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 110 },
+            { id: 6, name: "Carving Creations", category: "Crafts & Gifts", productName: "Wood Carving", description: "Handcrafted wood carvings.", whatsapp: "8765551239", instagram: "carvingcreations", location: "Mandeville", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 130 },
+            { id: 7, name: "Healthy Vibes", category: "Health & Wellness", productName: "Organic Spices", description: "Fresh organic spices.", whatsapp: "8765551240", instagram: "healthyvibesja", location: "St. Ann", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 95 },
+            { id: 8, name: "FixIt Services", category: "Services", productName: "Phone Repair", description: "Fast phone repair services.", whatsapp: "8765551241", instagram: "fixitservices", location: "Spanish Town", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 85 },
+            { id: 9, name: "Little Tykes", category: "Baby & Kids", productName: "Baby Bottles", description: "Safe baby bottles.", whatsapp: "8765551242", instagram: "littletykesja", location: "May Pen", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 75 },
+            { id: 10, name: "JAM Tours", category: "Tourism & Souvenirs", productName: "Rasta Hat", description: "Authentic Rasta hats for tourists.", whatsapp: "8765551243", instagram: "jamtours", location: "Falmouth", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 140 },
+            { id: 11, name: "Spicy Delights", category: "Food & Drinks", productName: "Jerk Seasoning", description: "Homemade jerk seasoning.", whatsapp: "8765551244", instagram: "spicydelights", location: "Kingston", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 115 },
+            { id: 12, name: "Reggae Wear", category: "Fashion & Accessories", productName: "Reggae Jacket", description: "Stylish reggae jackets.", whatsapp: "8765551245", instagram: "reggaewear", location: "Ocho Rios", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 105 },
+            { id: 13, name: "Gadget Guru", category: "Tech & Electronics", productName: "Smartwatch", description: "Affordable smartwatches.", whatsapp: "8765551246", instagram: "gadgetguruja", location: "Montego Bay", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 70 },
+            { id: 14, name: "Home Essentials", category: "Home & Kitchen", productName: "Air Fryer", description: "Compact air fryer for meals.", whatsapp: "8765551247", instagram: "homeessentialsja", location: "Negril", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 65 },
+            { id: 15, name: "Glow JA", category: "Beauty & Personal Care", productName: "Shea Butter", description: "Natural shea butter lotion.", whatsapp: "8765551248", instagram: "glowja", location: "Portmore", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 125 },
+            { id: 16, name: "Crafty Hands", category: "Crafts & Gifts", productName: "Beaded Necklace", description: "Handmade beaded necklaces.", whatsapp: "8765551249", instagram: "craftyhandsja", location: "Mandeville", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 135 },
+            { id: 17, name: "Fit Life", category: "Health & Wellness", productName: "Yoga Mats", description: "Eco-friendly yoga mats.", whatsapp: "8765551250", instagram: "fitlifeja", location: "St. Ann", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 90 },
+            { id: 18, name: "Quick Fixes", category: "Services", productName: "Appliance Repair", description: "Reliable appliance repairs.", whatsapp: "8765551251", instagram: "quickfixesja", location: "Spanish Town", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 80 },
+            { id: 19, name: "Tiny Tots", category: "Baby & Kids", productName: "Diapers", description: "Premium baby diapers.", whatsapp: "8765551252", instagram: "tinytotsja", location: "May Pen", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 60 },
+            { id: 20, name: "Island Souvenirs", category: "Tourism & Souvenirs", productName: "Coffee Mug", description: "Jamaican coffee mugs.", whatsapp: "8765551253", instagram: "islandsouvenirs", location: "Falmouth", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 145 },
+            { id: 21, name: "Patty Palace", category: "Food & Drinks", productName: "Beef Patties", description: "Delicious beef patties.", whatsapp: "8765551254", instagram: "pattypalace", location: "Kingston", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 100 },
+            { id: 22, name: "JAM Style", category: "Fashion & Accessories", productName: "Sunglasses", description: "Trendy sunglasses.", whatsapp: "8765551255", instagram: "jamstyle", location: "Ocho Rios", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 110 },
+            { id: 23, name: "Tech Savvy", category: "Tech & Electronics", productName: "Phone Charger", description: "Fast-charging phone chargers.", whatsapp: "8765551256", instagram: "techsavvyja", location: "Montego Bay", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 85 },
+            { id: 24, name: "Kitchen Kings", category: "Home & Kitchen", productName: "Electric Kettle", description: "Stylish electric kettle.", whatsapp: "8765551257", instagram: "kitchenkings", location: "Negril", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 75 },
+            { id: 25, name: "Pure Glow", category: "Beauty & Personal Care", productName: "Face Mask", description: "Natural face masks.", whatsapp: "8765551258", instagram: "pureglowja", location: "Portmore", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 120 },
+            { id: 26, name: "Artisan Alley", category: "Crafts & Gifts", productName: "Painted Canvas", description: "Hand-painted Jamaican art.", whatsapp: "8765551259", instagram: "artisanalley", location: "Mandeville", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 130 },
+            { id: 27, name: "Wellness Way", category: "Health & Wellness", productName: "Herbal Tea", description: "Organic herbal teas.", whatsapp: "8765551260", instagram: "wellnesswayja", location: "St. Ann", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 95 },
+            { id: 28, name: "Service Pros", category: "Services", productName: "Car Wash", description: "Professional car wash services.", whatsapp: "8765551261", instagram: "serviceprosja", location: "Spanish Town", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 70 },
+            { id: 29, name: "Baby Bliss", category: "Baby & Kids", productName: "Toy Set", description: "Safe toy sets for kids.", whatsapp: "8765551262", instagram: "babyblissja", location: "May Pen", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 65 },
+            { id: 30, name: "JAM Treasures", category: "Tourism & Souvenirs", productName: "Wooden Statues", description: "Unique wooden statues.", whatsapp: "8765551263", instagram: "jamtreasures", location: "Falmouth", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 150 }
+        ];
 
         // Save businesses to local storage
         function saveBusinesses() {
