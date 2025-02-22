@@ -23,21 +23,33 @@
         }
         .header {
             text-align: center;
-            padding: 40px 20px;
+            padding: 20px 20px; /* Reduced height for compactness */
             background: linear-gradient(90deg, #ff6b6b 0%, #4ecdc4 100%);
-            border-bottom: 4px solid #ff8a8a;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+            border-bottom: 2px solid #ff8a8a; /* Thinner border for elegance */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); /* Softer shadow */
             animation: headerGlow 2s infinite alternate;
             position: relative;
             z-index: 2;
         }
         @keyframes headerGlow {
-            0% { box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
-            100% { box-shadow: 0 6px 30px rgba(255, 107, 107, 0.5); }
+            0% { box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+            100% { box-shadow: 0 4px 25px rgba(255, 107, 107, 0.5); }
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em; /* Reduced for compactness */
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2); /* Softer shadow */
+            color: #fff;
+        }
+        .header p {
+            margin: 5px 0 0; /* Reduced margin for compactness */
+            font-size: 1em; /* Reduced for elegance */
+            color: #fff;
+            opacity: 0.9;
         }
         .nav {
             text-align: center;
-            margin: 20px 0;
+            margin: 15px 0; /* Reduced margin for compactness */
             padding: 10px;
             background: rgba(255, 255, 255, 0.9);
             border-radius: 15px;
@@ -58,7 +70,7 @@
         }
         .nav .profile-icon {
             position: absolute;
-            top: 5px; /* Moved higher for better visibility */
+            top: 2px; /* Moved higher for better visibility */
             right: 20px;
             font-size: 1.5em;
             color: #4ecdc4;
@@ -71,17 +83,17 @@
         }
         .nav .login-indicator {
             position: absolute;
-            top: 12px; /* Position beside the profile icon */
-            right: 50px; /* Adjusted to align with profile icon */
+            top: 9px; /* Adjusted to align with higher profile icon */
+            right: 50px;
             width: 10px;
             height: 10px;
-            background-color: #2ecc71; /* Green light for logged in */
+            background-color: #2ecc71;
             border-radius: 50%;
             display: none;
         }
         .nav .auth-button {
             position: absolute;
-            top: 10px;
+            top: 5px; /* Adjusted to match higher profile icon */
             right: 20px;
             padding: 8px 15px;
             background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
@@ -127,7 +139,7 @@
             font-size: 2em;
             margin-bottom: 20px;
         }
-        .modal-content input {
+        .modal-content input, .modal-content .social-button {
             width: 100%;
             padding: 12px;
             margin-bottom: 15px;
@@ -137,11 +149,27 @@
             background: #fafafa;
             font-size: 1em;
             transition: border-color 0.3s, box-shadow 0.3s;
+            cursor: pointer;
         }
         .modal-content input:focus {
             border-color: #4ecdc4;
             box-shadow: 0 0 10px rgba(78, 205, 196, 0.3);
             outline: none;
+        }
+        .modal-content .social-button {
+            background: none;
+            border-color: #ddd;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content .social-button:hover {
+            border-color: #4ecdc4;
+            box-shadow: 0 0 10px rgba(78, 205, 196, 0.3);
+        }
+        .modal-content .social-button i {
+            margin-right: 10px;
         }
         .modal-content button, .popup-content button {
             background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
@@ -245,12 +273,12 @@
         }
         .business-card h3 {
             margin: 0 0 10px;
-            font-size: 2.2em; /* Increased for premium look */
+            font-size: 2.2em;
             color: #ff6b6b;
-            font-weight: 700; /* Bolder for elegance */
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+            font-weight: 700;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
             display: inline-block;
-            text-transform: uppercase; /* Optional: for a bold, modern feel */
+            text-transform: uppercase;
         }
         .business-card .fire {
             font-size: 1.2em;
@@ -445,7 +473,10 @@
             <h2>Sign Up</h2>
             <input type="text" id="signupUsername" placeholder="Username" required>
             <input type="password" id="signupPassword" placeholder="Password" required>
-            <button onclick="signup()">Sign Up</button>
+            <button class="social-button" onclick="simulateSocialLogin('google')"><i class="fab fa-google"></i> Sign Up with Google</button>
+            <button class="social-button" onclick="simulateSocialLogin('facebook')"><i class="fab fa-facebook-f"></i> Sign Up with Facebook</button>
+            <button class="social-button" onclick="simulateSocialLogin('apple')"><i class="fab fa-apple"></i> Sign Up with Apple</button>
+            <button onclick="signup()">Sign Up with Email</button>
             <button onclick="closeModal('signupModal')">Close</button>
         </div>
     </div>
@@ -456,7 +487,10 @@
             <h2>Login</h2>
             <input type="text" id="loginUsername" placeholder="Username" required>
             <input type="password" id="loginPassword" placeholder="Password" required>
-            <button onclick="login()">Login</button>
+            <button class="social-button" onclick="simulateSocialLogin('google')"><i class="fab fa-google"></i> Login with Google</button>
+            <button class="social-button" onclick="simulateSocialLogin('facebook')"><i class="fab fa-facebook-f"></i> Login with Facebook</button>
+            <button class="social-button" onclick="simulateSocialLogin('apple')"><i class="fab fa-apple"></i> Login with Apple</button>
+            <button onclick="login()">Login with Email</button>
             <button onclick="closeModal('loginModal')">Close</button>
             <a href="#" onclick="showModal('signupModal'); closeModal('loginModal')">Don’t have an account? Sign Up</a>
         </div>
@@ -617,6 +651,24 @@
             document.getElementById('fullProfile').style.display = 'none';
         }
 
+        // Simulate social login (frontend mockup only)
+        function simulateSocialLogin(provider) {
+            alert(`Logging in with ${provider} (simulated)`);
+            const username = `user_${provider}_${Date.now()}`;
+            const password = `pass_${Date.now()}`;
+            users[username] = { password: password, type: 'operator' };
+            localStorage.setItem('users', JSON.stringify(users));
+            localStorage.setItem('loggedIn', 'true');
+            localStorage.setItem('currentUser', username);
+            currentUser = username;
+            document.getElementById('loginIndicator').style.display = 'inline';
+            document.getElementById('profileIcon').style.display = 'inline';
+            document.getElementById('logoutLink').style.display = 'inline';
+            document.getElementById('authButton').style.display = 'none';
+            closeModal('loginModal');
+            updateProfile();
+        }
+
         // Sign up function
         function signup() {
             const username = document.getElementById('signupUsername').value;
@@ -741,6 +793,14 @@
                     } else {
                         productsList.innerHTML += '<p>No products added yet.</p>';
                     }
+                    // Add analytics for operators
+                    const analyticsSection = document.createElement('div');
+                    analyticsSection.innerHTML = `
+                        <h3>Analytics</h3>
+                        <canvas id="fullAnalyticsChart" width="400" height="200"></canvas>
+                    `;
+                    fullProfileDetails.appendChild(analyticsSection);
+                    renderFullAnalyticsChart();
                 } else {
                     fullProfileDetails.innerHTML = `
                         <p>Username: ${currentUser}</p>
@@ -752,7 +812,38 @@
             }
         }
 
-        // Render animated chart
+        // Render animated chart for full profile
+        function renderFullAnalyticsChart() {
+            const ctx = document.getElementById('fullAnalyticsChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+                    datasets: [
+                        {
+                            label: 'Clicks',
+                            data: [10, 15, 20, 25, 30],
+                            borderColor: '#ff6b6b',
+                            backgroundColor: 'rgba(255, 107, 107, 0.2)',
+                        },
+                        {
+                            label: 'Impressions',
+                            data: [100, 150, 200, 250, 300],
+                            borderColor: '#4ecdc4',
+                            backgroundColor: 'rgba(78, 205, 196, 0.2)',
+                        }
+                    ]
+                },
+                options: {
+                    animation: {
+                        duration: 1000,
+                        easing: 'easeInOutQuad'
+                    }
+                }
+            });
+        }
+
+        // Render animated chart for analytics modal
         function renderAnalyticsChart() {
             const ctx = document.getElementById('analyticsChart').getContext('2d');
             new Chart(ctx, {
@@ -785,7 +876,7 @@
 
         // Simple navigation function
         function goToSection(sectionId) {
-            document.querySelectorAll('.form-section, .feed').forEach(section => {
+            document.querySelectorAll('.form-section, .feed, .full-profile').forEach(section => {
                 section.style.display = 'none';
             });
             document.getElementById(sectionId).style.display = 'block';
