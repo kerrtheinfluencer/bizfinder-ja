@@ -49,7 +49,7 @@
         }
         .nav {
             text-align: center;
-            margin: 0; /* Removed margin for compactness */
+            margin: 0;
             padding: 10px;
             background: rgba(255, 255, 255, 0.9);
             border-radius: 15px;
@@ -57,7 +57,7 @@
             position: relative;
         }
         .nav-items {
-            display: inline-flex; /* Inline layout for nav items */
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             flex-wrap: wrap;
@@ -66,25 +66,25 @@
             margin: 0 15px;
             text-decoration: none;
             color: #4ecdc4;
-            font-weight: 700; /* Bolder for premium look */
-            font-size: 1.2em; /* Larger for elegance */
+            font-weight: 700;
+            font-size: 1.2em;
             transition: transform 0.3s, color 0.3s;
             background: none;
             border: none;
             cursor: pointer;
-            padding: 5px 0; /* Compact padding */
+            padding: 5px 0;
         }
-        .nav a.home-link { /* Specific styling for "Home" */
-            font-size: 1.3em; /* Slightly larger for prominence */
-            color: #ff6b6b; /* Coral color for premium look */
-            text-shadow: 0 1px 2px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+        .nav a.home-link {
+            font-size: 1.3em;
+            color: #ff6b6b;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
         .nav a.home-link:hover, .nav a:hover, .nav button:hover {
             transform: scale(1.1);
             color: #ff6b6b;
         }
         .nav .profile-icon, .nav .login-indicator {
-            margin-left: 15px; /* Align with nav items */
+            margin-left: 15px;
             display: inline-flex;
             align-items: center;
         }
@@ -107,7 +107,7 @@
         }
         .nav a#logoutLink {
             margin: 0 15px;
-            color: #ff6b6b; /* Coral for consistency */
+            color: #ff6b6b;
             font-weight: 600;
             font-size: 1.1em;
             transition: transform 0.3s, color 0.3s;
@@ -116,8 +116,20 @@
             transform: scale(1.1);
             color: #4ecdc4;
         }
+        .nav a#addBusinessLink, .nav a#statsLink {
+            display: none;
+            margin: 0 15px;
+            color: #4ecdc4;
+            font-weight: 600;
+            font-size: 1.1em;
+            transition: transform 0.3s, color 0.3s;
+        }
+        .nav a#addBusinessLink:hover, .nav a#statsLink:hover {
+            transform: scale(1.1);
+            color: #ff6b6b;
+        }
         .search-bar {
-            margin: 10px 0 0; /* Move under "Home" with minimal margin */
+            margin: 10px 0 20px; /* Positioned directly below nav, with bottom margin for spacing */
             padding: 10px;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
@@ -455,7 +467,6 @@
             <a href="#business-signup" id="addBusinessLink" style="display: none;" onclick="checkAddBusiness()">Add Business</a>
             <a href="#" id="statsLink" style="display: none;" onclick="showAnalytics()">Stats</a>
         </div>
-        <button id="authButton" class="auth-button" style="display: inline;" onclick="showAuthModal()">Login/Sign Up</button>
     </div>
 
     <div class="search-bar">
