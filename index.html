@@ -951,6 +951,7 @@
                 section.style.display = 'none';
             });
             document.getElementById(sectionId).style.display = 'block';
+            window.location.hash = sectionId; // Update URL hash for navigation
         }
 
         // Filter businesses with search and filters
@@ -1083,6 +1084,12 @@
                     }
                 });
             });
+
+            // Handle hash navigation
+            const hash = window.location.hash.substring(1);
+            if (hash) {
+                goToSection(hash);
+            }
         });
     </script>
 </body>
