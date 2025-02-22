@@ -23,10 +23,10 @@
         }
         .header {
             text-align: center;
-            padding: 20px 20px; /* Reduced height for compactness */
+            padding: 20px 20px;
             background: linear-gradient(90deg, #ff6b6b 0%, #4ecdc4 100%);
-            border-bottom: 2px solid #ff8a8a; /* Thinner border for elegance */
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2); /* Softer shadow */
+            border-bottom: 2px solid #ff8a8a;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             animation: headerGlow 2s infinite alternate;
             position: relative;
             z-index: 2;
@@ -37,41 +37,58 @@
         }
         .header h1 {
             margin: 0;
-            font-size: 2.5em; /* Reduced for compactness */
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.2); /* Softer shadow */
+            font-size: 2.5em;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
             color: #fff;
         }
         .header p {
-            margin: 5px 0 0; /* Reduced margin for compactness */
-            font-size: 1em; /* Reduced for elegance */
+            margin: 5px 0 0;
+            font-size: 1em;
             color: #fff;
             opacity: 0.9;
         }
         .nav {
             text-align: center;
-            margin: 15px 0; /* Reduced margin for compactness */
+            margin: 0; /* Removed margin for compactness */
             padding: 10px;
             background: rgba(255, 255, 255, 0.9);
             border-radius: 15px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             position: relative;
         }
-        .nav a {
+        .nav-items {
+            display: inline-flex; /* Inline layout for nav items */
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .nav a, .nav button {
             margin: 0 15px;
             text-decoration: none;
             color: #4ecdc4;
-            font-weight: 600;
-            font-size: 1.1em;
+            font-weight: 700; /* Bolder for premium look */
+            font-size: 1.2em; /* Larger for elegance */
             transition: transform 0.3s, color 0.3s;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px 0; /* Compact padding */
         }
-        .nav a:hover {
+        .nav a.home-link { /* Specific styling for "Home" */
+            font-size: 1.3em; /* Slightly larger for prominence */
+            color: #ff6b6b; /* Coral color for premium look */
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+        }
+        .nav a.home-link:hover, .nav a:hover, .nav button:hover {
             transform: scale(1.1);
             color: #ff6b6b;
         }
+        .nav .profile-icon, .nav .login-indicator {
+            margin-left: 15px; /* Align with nav items */
+            display: inline-flex;
+            align-items: center;
+        }
         .nav .profile-icon {
-            position: absolute;
-            top: 2px; /* Moved higher for better visibility */
-            right: 20px;
             font-size: 1.5em;
             color: #4ecdc4;
             cursor: pointer;
@@ -82,123 +99,25 @@
             color: #ff6b6b;
         }
         .nav .login-indicator {
-            position: absolute;
-            top: 9px; /* Adjusted to align with higher profile icon */
-            right: 50px;
             width: 10px;
             height: 10px;
             background-color: #2ecc71;
             border-radius: 50%;
-            display: none;
+            margin-left: 5px;
         }
-        .nav .auth-button {
-            position: absolute;
-            top: 5px; /* Adjusted to match higher profile icon */
-            right: 20px;
-            padding: 8px 15px;
-            background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 1em;
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        .nav .auth-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
-        .modal, .popup {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .modal-content, .popup-content {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            text-align: center;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-            animation: popIn 0.5s ease;
-            width: 90%;
-            max-width: 400px;
-        }
-        @keyframes popIn {
-            0% { transform: scale(0.8); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        .modal-content h2, .popup-content h2 {
-            color: #ff6b6b;
-            font-size: 2em;
-            margin-bottom: 20px;
-        }
-        .modal-content input, .modal-content .social-button {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            box-sizing: border-box;
-            background: #fafafa;
-            font-size: 1em;
-            transition: border-color 0.3s, box-shadow 0.3s;
-            cursor: pointer;
-        }
-        .modal-content input:focus {
-            border-color: #4ecdc4;
-            box-shadow: 0 0 10px rgba(78, 205, 196, 0.3);
-            outline: none;
-        }
-        .modal-content .social-button {
-            background: none;
-            border-color: #ddd;
-            color: #2c3e50;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .modal-content .social-button:hover {
-            border-color: #4ecdc4;
-            box-shadow: 0 0 10px rgba(78, 205, 196, 0.3);
-        }
-        .modal-content .social-button i {
-            margin-right: 10px;
-        }
-        .modal-content button, .popup-content button {
-            background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
-            color: white;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: bold;
+        .nav a#logoutLink {
+            margin: 0 15px;
+            color: #ff6b6b; /* Coral for consistency */
+            font-weight: 600;
             font-size: 1.1em;
-            margin: 5px;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform 0.3s, color 0.3s;
         }
-        .modal-content button:hover, .popup-content button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-        }
-        .modal-content a {
+        .nav a#logoutLink:hover {
+            transform: scale(1.1);
             color: #4ecdc4;
-            text-decoration: none;
-            font-size: 0.9em;
-            margin-top: 10px;
-            display: block;
-        }
-        .modal-content a:hover {
-            color: #ff6b6b;
         }
         .search-bar {
-            margin: 20px 0;
+            margin: 10px 0 0; /* Move under "Home" with minimal margin */
             padding: 10px;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
@@ -527,6 +446,18 @@
         <p>Discover Jamaica’s Hottest Businesses</p>
     </div>
 
+    <div class="nav">
+        <div class="nav-items">
+            <a href="#home" class="home-link">Home</a>
+            <i class="fas fa-user profile-icon" id="profileIcon" style="display: none;" onclick="showProfilePopup()"></i>
+            <span class="login-indicator" id="loginIndicator" style="display: none;"></span>
+            <a href="#" id="logoutLink" style="display: none;" onclick="logout()">Logout</a>
+            <a href="#business-signup" id="addBusinessLink" style="display: none;" onclick="checkAddBusiness()">Add Business</a>
+            <a href="#" id="statsLink" style="display: none;" onclick="showAnalytics()">Stats</a>
+        </div>
+        <button id="authButton" class="auth-button" style="display: inline;" onclick="showAuthModal()">Login/Sign Up</button>
+    </div>
+
     <div class="search-bar">
         <input type="text" id="searchInput" placeholder="Search businesses, products, or categories..." style="width: 90%; padding: 10px; border: none; border-radius: 15px; vertical-align: middle;">
         <button type="button" id="searchButton" class="search-button">Search</button>
@@ -545,14 +476,6 @@
         <button onclick="filterByCategory('Baby & Kids')">Baby & Kids</button>
         <button onclick="filterByCategory('Tourism & Souvenirs')">Tourism & Souvenirs</button>
         <button id="clearFilters" onclick="clearFilters()">Clear Filters</button>
-    </div>
-
-    <div class="nav">
-        <a href="#home">Home</a>
-        <i class="fas fa-user profile-icon" id="profileIcon" style="display: none;" onclick="showProfilePopup()"></i>
-        <span class="login-indicator" id="loginIndicator" style="display: none;"></span>
-        <a href="#" id="logoutLink" style="display: none;" onclick="logout()">Logout</a>
-        <button id="authButton" class="auth-button" style="display: inline;" onclick="showAuthModal()">Login/Sign Up</button>
     </div>
 
     <div class="container">
@@ -664,6 +587,8 @@
             document.getElementById('loginIndicator').style.display = 'inline';
             document.getElementById('profileIcon').style.display = 'inline';
             document.getElementById('logoutLink').style.display = 'inline';
+            document.getElementById('addBusinessLink').style.display = 'inline';
+            document.getElementById('statsLink').style.display = 'inline';
             document.getElementById('authButton').style.display = 'none';
             closeModal('loginModal');
             updateProfile();
@@ -696,6 +621,8 @@
                 document.getElementById('loginIndicator').style.display = 'inline';
                 document.getElementById('profileIcon').style.display = 'inline';
                 document.getElementById('logoutLink').style.display = 'inline';
+                document.getElementById('addBusinessLink').style.display = 'inline';
+                document.getElementById('statsLink').style.display = 'inline';
                 document.getElementById('authButton').style.display = 'none';
                 closeModal('loginModal');
                 updateProfile();
@@ -712,6 +639,8 @@
             document.getElementById('loginIndicator').style.display = 'none';
             document.getElementById('profileIcon').style.display = 'none';
             document.getElementById('logoutLink').style.display = 'none';
+            document.getElementById('addBusinessLink').style.display = 'none';
+            document.getElementById('statsLink').style.display = 'none';
             document.getElementById('authButton').style.display = 'inline';
             document.getElementById('profilePopup').style.display = 'none';
             document.getElementById('fullProfile').style.display = 'none';
@@ -882,6 +811,109 @@
             document.getElementById(sectionId).style.display = 'block';
         }
 
+        // Filter businesses with search and filters
+        let currentFilter = 'All';
+
+        function filterBusinesses(searchQuery = '', filter = currentFilter) {
+            const listings = document.getElementById('businessListings');
+            listings.innerHTML = '';
+            let filtered = businesses;
+
+            if (filter !== 'All') {
+                filtered = filtered.filter(b => b.category === filter);
+            }
+
+            if (searchQuery) {
+                const lowerQuery = searchQuery.toLowerCase();
+                filtered = filtered.filter(b => 
+                    b.name.toLowerCase().includes(lowerQuery) ||
+                    b.category.toLowerCase().includes(lowerQuery) ||
+                    b.productName.toLowerCase().includes(lowerQuery)
+                );
+            }
+
+            filtered.sort((a, b) => b.views - a.views); // Sort by views
+            filtered.forEach((business, index) => {
+                const card = createBusinessCard(business);
+                card.style.animationDelay = `${index * 0.1}s`;
+                listings.appendChild(card);
+            });
+        }
+
+        function filterByCategory(category) {
+            currentFilter = category;
+            filterBusinesses(document.getElementById('searchInput').value);
+        }
+
+        function clearFilters() {
+            currentFilter = 'All';
+            document.getElementById('searchInput').value = '';
+            filterBusinesses();
+            document.querySelector('.filters').style.display = 'none'; // Hide filters again
+        }
+
+        // Handle search
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.querySelector('.filters').style.display = 'block'; // Show filters on Enter
+                filterBusinesses(this.value);
+            }
+        });
+
+        document.getElementById('searchButton').addEventListener('click', function() {
+            document.querySelector('.filters').style.display = 'block'; // Show filters on button click
+            filterBusinesses(document.getElementById('searchInput').value);
+        });
+
+        // Handle scroll for search bar
+        let scrollTimeout;
+        window.addEventListener('scroll', () => {
+            const searchBar = document.querySelector('.search-bar');
+            searchBar.classList.add('hidden');
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                searchBar.classList.remove('hidden');
+            }, 500); // Reappear after 0.5 seconds of no scroll
+        });
+
+        // Create business card
+        function createBusinessCard(business) {
+            const card = document.createElement('div');
+            card.className = 'business-card';
+            const fire = business.views > 100 ? '<span class="fire">🔥</span>' : '';
+            card.innerHTML = `
+                <h3>${business.name} ${fire}</h3>
+                <p><strong>Category:</strong> ${business.category}</p>
+                <p><strong>Featured Product:</strong> ${business.productName}</p>
+                <p>${business.description}</p>
+                <div class="contact-links">
+                    <a href="https://wa.me/${business.whatsapp}" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                    <a href="https://instagram.com/${business.instagram}" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
+                </div>
+                <p><strong>Location:</strong> ${business.location}</p>
+                <img src="${business.displayPhoto}" alt="${business.name} Display Photo">
+                <img src="${business.productPhoto}" alt="${business.productName} Photo">
+                <p class="views"><strong>Views:</strong> <span id="views-${business.id}">${business.views}</span></p>
+                <button onclick="incrementView(${business.id})">View Details</button>
+            `;
+            return card;
+        }
+
+        // Increment view count
+        function incrementView(id) {
+            const business = businesses.find(b => b.id === id);
+            if (business) {
+                business.views++;
+                saveBusinesses();
+                filterBusinesses(document.getElementById('searchInput').value, currentFilter);
+            }
+        }
+
+        // Save businesses to local storage
+        function saveBusinesses() {
+            localStorage.setItem('businesses', JSON.stringify(businesses));
+        }
+
         // Initial page load
         document.addEventListener('DOMContentLoaded', () => {
             goToSection('home');
@@ -889,46 +921,14 @@
                 document.getElementById('loginIndicator').style.display = 'inline';
                 document.getElementById('profileIcon').style.display = 'inline';
                 document.getElementById('logoutLink').style.display = 'inline';
+                document.getElementById('addBusinessLink').style.display = 'inline';
+                document.getElementById('statsLink').style.display = 'inline';
                 document.getElementById('authButton').style.display = 'none';
                 currentUser = localStorage.getItem('currentUser');
                 updateProfile();
             }
             filterBusinesses(); // Load all businesses initially
         });
-
-        // Business data and functions (kept for continuity)
-        let businesses = JSON.parse(localStorage.getItem('businesses')) || [
-            { id: 1, name: "Taste of Mobay", category: "Food & Drinks", productName: "Jerk Chicken", description: "Authentic jerk chicken and patties.", whatsapp: "8765551234", instagram: "tasteofmobay", location: "Montego Bay", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 150 },
-            { id: 2, name: "Rasta Threads", category: "Fashion & Accessories", productName: "Rasta Tee", description: "Vibrant Rasta-themed t-shirts.", whatsapp: "8765551235", instagram: "rastathreads", location: "Kingston", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 120 },
-            { id: 3, name: "TechTrend JA", category: "Tech & Electronics", productName: "Wireless Earbuds", description: "High-quality wireless earbuds.", whatsapp: "8765551236", instagram: "techtrendja", location: "Ocho Rios", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 90 },
-            { id: 4, name: "Island Kitchen Co.", category: "Home & Kitchen", productName: "Blender", description: "Powerful blender for smoothies.", whatsapp: "8765551237", instagram: "islandkitchen", location: "Negril", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 80 },
-            { id: 5, name: "JAM Beauty", category: "Beauty & Personal Care", productName: "Coconut Oil Soap", description: "Natural coconut oil soap.", whatsapp: "8765551238", instagram: "jambbeauty", location: "Portmore", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 110 },
-            { id: 6, name: "Carving Creations", category: "Crafts & Gifts", productName: "Wood Carving", description: "Handcrafted wood carvings.", whatsapp: "8765551239", instagram: "carvingcreations", location: "Mandeville", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 130 },
-            { id: 7, name: "Healthy Vibes", category: "Health & Wellness", productName: "Organic Spices", description: "Fresh organic spices.", whatsapp: "8765551240", instagram: "healthyvibesja", location: "St. Ann", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 95 },
-            { id: 8, name: "FixIt Services", category: "Services", productName: "Phone Repair", description: "Fast phone repair services.", whatsapp: "8765551241", instagram: "fixitservices", location: "Spanish Town", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 85 },
-            { id: 9, name: "Little Tykes", category: "Baby & Kids", productName: "Baby Bottles", description: "Safe baby bottles.", whatsapp: "8765551242", instagram: "littletykesja", location: "May Pen", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 75 },
-            { id: 10, name: "JAM Tours", category: "Tourism & Souvenirs", productName: "Rasta Hat", description: "Authentic Rasta hats for tourists.", whatsapp: "8765551243", instagram: "jamtours", location: "Falmouth", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 140 },
-            { id: 11, name: "Spicy Delights", category: "Food & Drinks", productName: "Jerk Seasoning", description: "Homemade jerk seasoning.", whatsapp: "8765551244", instagram: "spicydelights", location: "Kingston", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 115 },
-            { id: 12, name: "Reggae Wear", category: "Fashion & Accessories", productName: "Reggae Jacket", description: "Stylish reggae jackets.", whatsapp: "8765551245", instagram: "reggaewear", location: "Ocho Rios", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 105 },
-            { id: 13, name: "Gadget Guru", category: "Tech & Electronics", productName: "Smartwatch", description: "Affordable smartwatches.", whatsapp: "8765551246", instagram: "gadgetguruja", location: "Montego Bay", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 70 },
-            { id: 14, name: "Home Essentials", category: "Home & Kitchen", productName: "Air Fryer", description: "Compact air fryer for meals.", whatsapp: "8765551247", instagram: "homeessentialsja", location: "Negril", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 65 },
-            { id: 15, name: "Glow JA", category: "Beauty & Personal Care", productName: "Shea Butter", description: "Natural shea butter lotion.", whatsapp: "8765551248", instagram: "glowja", location: "Portmore", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 125 },
-            { id: 16, name: "Crafty Hands", category: "Crafts & Gifts", productName: "Beaded Necklace", description: "Handmade beaded necklaces.", whatsapp: "8765551249", instagram: "craftyhandsja", location: "Mandeville", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 135 },
-            { id: 17, name: "Fit Life", category: "Health & Wellness", productName: "Yoga Mats", description: "Eco-friendly yoga mats.", whatsapp: "8765551250", instagram: "fitlifeja", location: "St. Ann", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 90 },
-            { id: 18, name: "Quick Fixes", category: "Services", productName: "Appliance Repair", description: "Reliable appliance repairs.", whatsapp: "8765551251", instagram: "quickfixesja", location: "Spanish Town", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 80 },
-            { id: 19, name: "Tiny Tots", category: "Baby & Kids", productName: "Diapers", description: "Premium baby diapers.", whatsapp: "8765551252", instagram: "tinytotsja", location: "May Pen", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 60 },
-            { id: 20, name: "Island Souvenirs", category: "Tourism & Souvenirs", productName: "Coffee Mug", description: "Jamaican coffee mugs.", whatsapp: "8765551253", instagram: "islandsouvenirs", location: "Falmouth", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 145 },
-            { id: 21, name: "Patty Palace", category: "Food & Drinks", productName: "Beef Patties", description: "Delicious beef patties.", whatsapp: "8765551254", instagram: "pattypalace", location: "Kingston", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 100 },
-            { id: 22, name: "JAM Style", category: "Fashion & Accessories", productName: "Sunglasses", description: "Trendy sunglasses.", whatsapp: "8765551255", instagram: "jamstyle", location: "Ocho Rios", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 110 },
-            { id: 23, name: "Tech Savvy", category: "Tech & Electronics", productName: "Phone Charger", description: "Fast-charging phone chargers.", whatsapp: "8765551256", instagram: "techsavvyja", location: "Montego Bay", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 85 },
-            { id: 24, name: "Kitchen Kings", category: "Home & Kitchen", productName: "Electric Kettle", description: "Stylish electric kettle.", whatsapp: "8765551257", instagram: "kitchenkings", location: "Negril", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 75 },
-            { id: 25, name: "Pure Glow", category: "Beauty & Personal Care", productName: "Face Mask", description: "Natural face masks.", whatsapp: "8765551258", instagram: "pureglowja", location: "Portmore", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 120 },
-            { id: 26, name: "Artisan Alley", category: "Crafts & Gifts", productName: "Painted Canvas", description: "Hand-painted Jamaican art.", whatsapp: "8765551259", instagram: "artisanalley", location: "Mandeville", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 130 },
-            { id: 27, name: "Wellness Way", category: "Health & Wellness", productName: "Herbal Tea", description: "Organic herbal teas.", whatsapp: "8765551260", instagram: "wellnesswayja", location: "St. Ann", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 95 },
-            { id: 28, name: "Service Pros", category: "Services", productName: "Car Wash", description: "Professional car wash services.", whatsapp: "8765551261", instagram: "serviceprosja", location: "Spanish Town", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 70 },
-            { id: 29, name: "Baby Bliss", category: "Baby & Kids", productName: "Toy Set", description: "Safe toy sets for kids.", whatsapp: "8765551262", instagram: "babyblissja", location: "May Pen", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 65 },
-            { id: 30, name: "JAM Treasures", category: "Tourism & Souvenirs", productName: "Wooden Statues", description: "Unique wooden statues.", whatsapp: "8765551263", instagram: "jamtreasures", location: "Falmouth", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 150 }
-        ];
     </script>
 </body>
 </html>
