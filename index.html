@@ -106,27 +106,33 @@
             display: none;
             right: 0;
             background: white;
-            min-width: 180px; /* Increased width for better readability */
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-            border-radius: 10px;
+            min-width: 200px; /* Increased width for better readability */
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            border-radius: 12px;
             z-index: 1;
+            animation: fadeInDrop 0.3s ease-out;
+        }
+        @keyframes fadeInDrop {
+            0% { opacity: 0; transform: translateY(-10px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
         .nav .dropdown-content {
             display: block;
         }
         .nav .dropdown-content a {
             color: #4ecdc4;
-            padding: 15px 16px; /* Increased padding for elegance */
+            padding: 15px 20px; /* Increased padding for elegance */
             text-decoration: none;
             display: block;
-            font-size: 1em;
+            font-size: 1.1em;
             font-weight: 600;
             border-bottom: 1px solid #ddd;
-            transition: background-color 0.3s, color 0.3s;
+            transition: background-color 0.3s, color 0.3s, transform 0.3s;
         }
         .nav .dropdown-content a:hover {
             background-color: #f1f1f1;
             color: #ff6b6b;
+            transform: translateX(5px);
         }
         .nav .dropdown-content a:last-child {
             border-bottom: none;
@@ -560,8 +566,8 @@
     <div id="profilePopup" class="popup">
         <div class="popup-content">
             <h2>Profile Options</h2>
-            <a href="#" onclick="logout(); closeModal('profilePopup')">Logout</a>
-            <a href="#" onclick="showFullProfile()">View Full Profile</a>
+            <a href="#" onclick="logout(); closeModal('profilePopup')" class="profile-option">Logout</a>
+            <a href="#" onclick="showFullProfile()" class="profile-option">View Full Profile</a>
         </div>
     </div>
 
@@ -706,6 +712,7 @@
         // Hide full profile
         function hideFullProfile() {
             document.getElementById('fullProfile').style.display = 'none';
+            goToSection('home'); // Return to home page
         }
 
         // Simulate social login (frontend mockup only)
@@ -723,6 +730,7 @@
             profileIcon.style.display = 'inline';
             loginIndicator.style.display = 'inline'; // Show green dot when logged in
             closeModal('loginModal');
+            showFullProfile(); // Redirect to full profile after login
             updateProfile();
         }
 
@@ -755,6 +763,7 @@
                 profileIcon.style.display = 'inline';
                 loginIndicator.style.display = 'inline'; // Show green dot when logged in
                 closeModal('loginModal');
+                showFullProfile(); // Redirect to full profile after login
                 updateProfile();
             } else {
                 alert('Invalid username or password');
@@ -772,6 +781,7 @@
             loginIndicator.style.display = 'none'; // Hide green dot when logged out
             document.getElementById('profilePopup').style.display = 'none';
             document.getElementById('fullProfile').style.display = 'none';
+            goToSection('home'); // Return to home page after logout
             alert('Logged out successfully');
         }
 
@@ -1055,6 +1065,7 @@
                 profileIcon.style.display = 'inline';
                 loginIndicator.style.display = 'inline'; // Show green dot when logged in
                 currentUser = localStorage.getItem('currentUser');
+                showFullProfile(); // Show full profile on initial load if logged in
                 updateProfile();
             } else {
                 profileIcon.style.display = 'inline'; // Ensure profile icon is visible when not logged in
