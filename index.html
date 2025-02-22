@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BizFinder JA - Jamaican Business Hub</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             font-family: 'Poppins', Arial, sans-serif;
@@ -26,70 +27,8 @@
             background: linear-gradient(90deg, #ff6b6b 0%, #4ecdc4 100%);
             border-bottom: 4px solid #ff8a8a;
             box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-            animation: headerGlow 2s infinite alternate;
             position: relative;
             z-index: 2;
-        }
-        @keyframes headerGlow {
-            0% { box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
-            100% { box-shadow: 0 6px 30px rgba(255, 107, 107, 0.5); }
-        }
-        .header h1 {
-            margin: 0;
-            font-size: 3em;
-            text-shadow: 3px 3px 10px rgba(0,0,0,0.3);
-            color: #fff;
-        }
-        .search-bar {
-            margin: 20px 0;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            transition: opacity 0.3s ease;
-            z-index: 1;
-        }
-        .search-bar.hidden {
-            opacity: 0;
-        }
-        .search-button {
-            margin-left: 10px;
-            padding: 8px 15px;
-            background: #4ecdc4;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: transform 0.2s, background 0.2s;
-        }
-        .search-button:hover {
-            transform: scale(1.05);
-            background: #ff6b6b;
-        }
-        .filters {
-            display: none;
-            margin: 20px 0;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        .filters button {
-            margin: 0 10px 10px 0;
-            padding: 8px 15px;
-            background: #4ecdc4;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: transform 0.2s, background 0.2s;
-        }
-        .filters button:hover {
-            transform: scale(1.05);
-            background: #ff6b6b;
-        }
-        .filters #clearFilters {
-            background: #ff8a8a;
         }
         .nav {
             text-align: center;
@@ -99,7 +38,7 @@
             border-radius: 15px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
-        .nav a {
+        .nav a, .nav span {
             margin: 0 25px;
             text-decoration: none;
             color: #4ecdc4;
@@ -111,91 +50,7 @@
             transform: scale(1.1);
             color: #ff6b6b;
         }
-        .feed {
-            padding: 20px 0;
-        }
-        .business-card {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 20px;
-            margin: 20px 0;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-            position: relative;
-            opacity: 0;
-            transform: translateX(-100%);
-            animation: slideIn 0.6s ease-out forwards;
-        }
-        .business-card:nth-child(even) {
-            transform: translateX(100%);
-        }
-        @keyframes slideIn {
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-        .business-card h3 {
-            margin: 0 0 10px;
-            font-size: 1.8em;
-            color: #ff6b6b;
-            display: inline-block;
-        }
-        .business-card .fire {
-            font-size: 1.2em;
-            margin-left: 5px;
-            animation: pulseFire 1s infinite;
-        }
-        @keyframes pulseFire {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
-        .business-card img {
-            max-width: 180px;
-            height: auto;
-            border-radius: 10px;
-            margin: 10px 0;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
-        }
-        .business-card img:hover {
-            transform: scale(1.05);
-        }
-        .business-card p {
-            margin: 8px 0;
-            font-size: 1.1em;
-            color: #2c3e50;
-        }
-        .contact-links a {
-            margin-right: 20px;
-            color: #4ecdc4;
-            text-decoration: none;
-            font-size: 1.2em;
-            transition: transform 0.3s, color 0.3s;
-        }
-        .contact-links a:hover {
-            transform: scale(1.2);
-            color: #ff6b6b;
-        }
-        .views {
-            font-weight: bold;
-            color: #ff8a8a;
-        }
-        button {
-            background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
-        #signupModal, #loginModal {
+        .modal {
             position: fixed;
             top: 0;
             left: 0;
@@ -207,7 +62,7 @@
             align-items: center;
             z-index: 1000;
         }
-        #signupModal div, #loginModal div {
+        .modal-content {
             background: white;
             padding: 40px;
             border-radius: 15px;
@@ -218,12 +73,6 @@
         @keyframes popIn {
             0% { transform: scale(0.8); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
-        }
-        #signupModal h2, #loginModal h2 {
-            color: #2c3e50;
-        }
-        #signupModal button, #loginModal button {
-            margin: 15px 10px;
         }
         .form-section {
             background: rgba(255, 255, 255, 0.95);
@@ -242,12 +91,6 @@
             color: #ff6b6b;
             font-size: 2em;
             margin-bottom: 20px;
-            text-align: center;
-        }
-        .form-section p {
-            color: #2c3e50;
-            font-size: 1.1em;
-            margin-bottom: 25px;
             text-align: center;
         }
         .form-section label {
@@ -289,42 +132,61 @@
             transform: scale(1.05);
             box-shadow: 0 6px 15px rgba(0,0,0,0.2);
         }
-        .discount-message {
-            color: #ff6b6b;
-            font-weight: bold;
-            margin-top: 15px;
-            background: #fff5f5;
-            padding: 12px;
-            border-radius: 6px;
+        .analytics-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
             display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
         }
-        #operatorDashboard, #operatorProfile, #customerProfile {
-            display: none;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 25px;
-            margin: 20px 0;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        .analytics-content {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            width: 80%;
+            max-width: 600px;
+        }
+        canvas {
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <div id="signupModal">
-        <div>
-            <h2>Welcome to BizFinder JA!</h2>
-            <p>Are you a business or a customer?</p>
-            <button onclick="goToSection('business-signup')">Sign Up as Business</button>
-            <button onclick="goToSection('user-signup')">Sign Up as Customer</button>
-            <button onclick="closeModal()">Continue to Feed</button>
+    <!-- Signup Modal -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <h2>Sign Up</h2>
+            <input type="text" id="signupUsername" placeholder="Username" required>
+            <input type="password" id="signupPassword" placeholder="Password" required>
+            <button onclick="signup()">Sign Up</button>
+            <button onclick="closeModal('signupModal')">Close</button>
         </div>
     </div>
 
-    <div id="loginModal">
-        <div>
-            <h2>Operator Login</h2>
-            <input type="text" id="username" placeholder="Username" required>
-            <input type="password" id="password" placeholder="Password" required>
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <h2>Login</h2>
+            <input type="text" id="loginUsername" placeholder="Username" required>
+            <input type="password" id="loginPassword" placeholder="Password" required>
             <button onclick="login()">Login</button>
+            <button onclick="closeModal('loginModal')">Close</button>
+        </div>
+    </div>
+
+    <!-- Analytics Modal -->
+    <div id="analyticsModal" class="analytics-modal">
+        <div class="analytics-content">
+            <h2>Your Business Analytics</h2>
+            <canvas id="analyticsChart" width="400" height="200"></canvas>
+            <button onclick="closeModal('analyticsModal')">Close</button>
         </div>
     </div>
 
@@ -333,31 +195,13 @@
         <p>Discover Jamaica’s Hottest Businesses</p>
     </div>
 
-    <div class="search-bar">
-        <input type="text" id="searchInput" placeholder="Search businesses, products, or categories..." style="width: 90%; padding: 10px; border: none; border-radius: 15px; vertical-align: middle;">
-        <button type="button" id="searchButton" class="search-button">Search</button>
-    </div>
-
-    <div class="filters">
-        <button onclick="filterByCategory('All')">All</button>
-        <button onclick="filterByCategory('Food & Drinks')">Food & Drinks</button>
-        <button onclick="filterByCategory('Fashion & Accessories')">Fashion & Accessories</button>
-        <button onclick="filterByCategory('Tech & Electronics')">Tech & Electronics</button>
-        <button onclick="filterByCategory('Home & Kitchen')">Home & Kitchen</button>
-        <button onclick="filterByCategory('Beauty & Personal Care')">Beauty & Personal Care</button>
-        <button onclick="filterByCategory('Crafts & Gifts')">Crafts & Gifts</button>
-        <button onclick="filterByCategory('Health & Wellness')">Health & Wellness</button>
-        <button onclick="filterByCategory('Services')">Services</button>
-        <button onclick="filterByCategory('Baby & Kids')">Baby & Kids</button>
-        <button onclick="filterByCategory('Tourism & Souvenirs')">Tourism & Souvenirs</button>
-        <button id="clearFilters" onclick="clearFilters()">Clear Filters</button>
-    </div>
-
     <div class="nav">
         <a href="#home">Home</a>
-        <a href="#business-signup">Add Business</a>
+        <a href="#business-signup" onclick="checkAddBusiness()">Add Business</a>
         <a href="#user-signup">Get Discount</a>
-        <a href="#" onclick="showLoginModal()">Login</a>
+        <a href="#" onclick="showAnalytics()">Stats</a>
+        <span id="loginIndicator" style="display: none;">Logged In</span>
+        <a href="#" id="logoutLink" style="display: none;" onclick="logout()">Logout</a>
     </div>
 
     <div class="container">
@@ -400,312 +244,135 @@
             </form>
         </div>
 
-        <!-- User Sign-Up Section (Hidden) -->
-        <div class="form-section" id="user-signup">
-            <h2>Get Your Discount Code & Updates</h2>
-            <p>Sign up now and enjoy 10% off your next purchase from Jamaican businesses!</p>
-            <form id="userForm">
-                <label>Name:</label>
-                <input type="text" id="userName" required placeholder="Enter your full name">
-                <label>Email:</label>
-                <input type="email" id="userEmail" required placeholder="Enter your email address">
-                <label><input type="checkbox" id="emailUpdates"> Get Email Updates</label>
-                <button type="submit">Claim Your Code</button>
-            </form>
-            <p class="discount-message" id="discountMessage">Thanks for signing up! Use code <strong>BIZFINDER10</strong> for 10% off!</p>
-        </div>
-
         <!-- Feed Section -->
         <div class="feed" id="home">
             <div id="businessListings"></div>
         </div>
-
-        <!-- Operator Dashboard -->
-        <div id="operatorDashboard" style="display: none;">
-            <h2>Operator Dashboard</h2>
-            <p>Views: <span id="operatorViews">0</span></p>
-            <p>Clicks: <span id="operatorClicks">0</span></p>
-            <input type="file" id="extraProductPhoto" accept="image/*">
-            <button onclick="uploadPhoto()">Upload Photo</button>
-        </div>
-
-        <!-- Operator Profile -->
-        <div id="operatorProfile" style="display: none;">
-            <h2>Your Operator Profile</h2>
-            <p>Name: <span id="opName"></span></p>
-            <p>Business: <span id="opBusiness"></span></p>
-        </div>
-
-        <!-- Customer Profile -->
-        <div id="customerProfile" style="display: none;">
-            <h2>Your Customer Profile</h2>
-            <p>Name: <span id="custName"></span></p>
-            <p>Email: <span id="custEmail"></span></p>
-        </div>
     </div>
 
     <script>
+        // Simulated user database (in localStorage)
+        let users = JSON.parse(localStorage.getItem('users')) || {};
+
+        // Check if user is logged in
+        function checkLogin() {
+            return localStorage.getItem('loggedIn') === 'true';
+        }
+
+        // Show modal
+        function showModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+
         // Close modal
-        function closeModal() {
-            document.getElementById('signupModal').style.display = 'none';
-            document.getElementById('loginModal').style.display = 'none';
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
         }
 
-        // Show login modal
-        function showLoginModal() {
-            document.getElementById('loginModal').style.display = 'flex';
-        }
-
-        // Go to section and handle hash changes
-        function goToSection(sectionId) {
-            closeModal();
-            const section = document.getElementById(sectionId);
-            section.style.display = 'block';
-            section.scrollIntoView({ behavior: 'smooth' });
-            window.location.hash = sectionId; // Update URL
-        }
-
-        // Handle hash changes
-        window.addEventListener('hashchange', () => {
-            const hash = window.location.hash.substring(1); // Remove '#'
-            if (hash === 'business-signup' || hash === 'user-signup') {
-                goToSection(hash);
-            } else {
-                closeModal();
-                document.querySelectorAll('.form-section').forEach(section => section.style.display = 'none');
-                document.getElementById('home').scrollIntoView({ behavior: 'smooth' });
-            }
-        });
-
-        // Check hash on page load
-        window.onload = () => {
-            const hash = window.location.hash.substring(1);
-            if (hash === 'business-signup' || hash === 'user-signup') {
-                goToSection(hash);
-            } else {
-                filterBusinesses(); // Load all businesses initially
-            }
-        };
-
-        // Handle Login
-        function login() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
+        // Sign up function
+        function signup() {
+            const username = document.getElementById('signupUsername').value;
+            const password = document.getElementById('signupPassword').value;
             if (username && password) {
-                document.getElementById('loginModal').style.display = 'none';
-                document.getElementById('operatorDashboard').style.display = 'block';
-                document.getElementById('operatorProfile').style.display = 'block';
-                document.getElementById('opName').textContent = username;
-                document.getElementById('opBusiness').textContent = 'Your Business Name'; // Replace with dynamic business name later
-                document.getElementById('operatorViews').textContent = '50';
-                document.getElementById('operatorClicks').textContent = '20';
-            }
-        }
-
-        // Handle User Sign-Up
-        document.getElementById('userForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const name = document.getElementById('userName').value;
-            const email = document.getElementById('userEmail').value;
-            const updates = document.getElementById('emailUpdates').checked;
-            if (updates) {
-                const subscriptions = JSON.parse(localStorage.getItem('emailSubscriptions') || '[]');
-                if (!subscriptions.includes(email)) {
-                    subscriptions.push(email);
-                    localStorage.setItem('emailSubscriptions', JSON.stringify(subscriptions));
-                    alert('You’ll receive updates from operators! (Simulated)');
+                if (users[username]) {
+                    alert('Username already exists');
+                } else {
+                    users[username] = password;
+                    localStorage.setItem('users', JSON.stringify(users));
+                    alert('Sign up successful! Please log in.');
+                    closeModal('signupModal');
                 }
             }
-            document.getElementById('discountMessage').style.display = 'block';
-            document.getElementById('customerProfile').style.display = 'block';
-            document.getElementById('custName').textContent = name;
-            document.getElementById('custEmail').textContent = email;
-            this.reset();
-            setTimeout(() => {
-                document.getElementById('user-signup').style.display = 'none';
-                document.getElementById('home').scrollIntoView({ behavior: 'smooth' });
-            }, 2000);
-        });
+        }
 
-        // Handle Photo Upload (Simulated)
-        function uploadPhoto() {
-            const photo = document.getElementById('extraProductPhoto').files[0];
-            if (photo) {
-                alert('Photo uploaded successfully! (Simulated)');
+        // Login function
+        function login() {
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            if (users[username] && users[username] === password) {
+                localStorage.setItem('loggedIn', 'true');
+                document.getElementById('loginIndicator').style.display = 'inline';
+                document.getElementById('logoutLink').style.display = 'inline';
+                closeModal('loginModal');
+            } else {
+                alert('Invalid username or password');
             }
         }
 
-        // Business data (30 dummy businesses)
-        let businesses = JSON.parse(localStorage.getItem('businesses')) || [
-            { id: 1, name: "Taste of Mobay", category: "Food & Drinks", productName: "Jerk Chicken", description: "Authentic jerk chicken and patties.", whatsapp: "8765551234", instagram: "tasteofmobay", location: "Montego Bay", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 150 },
-            { id: 2, name: "Rasta Threads", category: "Fashion & Accessories", productName: "Rasta Tee", description: "Vibrant Rasta-themed t-shirts.", whatsapp: "8765551235", instagram: "rastathreads", location: "Kingston", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 120 },
-            { id: 3, name: "TechTrend JA", category: "Tech & Electronics", productName: "Wireless Earbuds", description: "High-quality wireless earbuds.", whatsapp: "8765551236", instagram: "techtrendja", location: "Ocho Rios", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 90 },
-            { id: 4, name: "Island Kitchen Co.", category: "Home & Kitchen", productName: "Blender", description: "Powerful blender for smoothies.", whatsapp: "8765551237", instagram: "islandkitchen", location: "Negril", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 80 },
-            { id: 5, name: "JAM Beauty", category: "Beauty & Personal Care", productName: "Coconut Oil Soap", description: "Natural coconut oil soap.", whatsapp: "8765551238", instagram: "jambbeauty", location: "Portmore", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 110 },
-            { id: 6, name: "Carving Creations", category: "Crafts & Gifts", productName: "Wood Carving", description: "Handcrafted wood carvings.", whatsapp: "8765551239", instagram: "carvingcreations", location: "Mandeville", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 130 },
-            { id: 7, name: "Healthy Vibes", category: "Health & Wellness", productName: "Organic Spices", description: "Fresh organic spices.", whatsapp: "8765551240", instagram: "healthyvibesja", location: "St. Ann", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 95 },
-            { id: 8, name: "FixIt Services", category: "Services", productName: "Phone Repair", description: "Fast phone repair services.", whatsapp: "8765551241", instagram: "fixitservices", location: "Spanish Town", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 85 },
-            { id: 9, name: "Little Tykes", category: "Baby & Kids", productName: "Baby Bottles", description: "Safe baby bottles.", whatsapp: "8765551242", instagram: "littletykesja", location: "May Pen", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 75 },
-            { id: 10, name: "JAM Tours", category: "Tourism & Souvenirs", productName: "Rasta Hat", description: "Authentic Rasta hats for tourists.", whatsapp: "8765551243", instagram: "jamtours", location: "Falmouth", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 140 },
-            { id: 11, name: "Spicy Delights", category: "Food & Drinks", productName: "Jerk Seasoning", description: "Homemade jerk seasoning.", whatsapp: "8765551244", instagram: "spicydelights", location: "Kingston", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 115 },
-            { id: 12, name: "Reggae Wear", category: "Fashion & Accessories", productName: "Reggae Jacket", description: "Stylish reggae jackets.", whatsapp: "8765551245", instagram: "reggaewear", location: "Ocho Rios", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 105 },
-            { id: 13, name: "Gadget Guru", category: "Tech & Electronics", productName: "Smartwatch", description: "Affordable smartwatches.", whatsapp: "8765551246", instagram: "gadgetguruja", location: "Montego Bay", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 70 },
-            { id: 14, name: "Home Essentials", category: "Home & Kitchen", productName: "Air Fryer", description: "Compact air fryer for meals.", whatsapp: "8765551247", instagram: "homeessentialsja", location: "Negril", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 65 },
-            { id: 15, name: "Glow JA", category: "Beauty & Personal Care", productName: "Shea Butter", description: "Natural shea butter lotion.", whatsapp: "8765551248", instagram: "glowja", location: "Portmore", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 125 },
-            { id: 16, name: "Crafty Hands", category: "Crafts & Gifts", productName: "Beaded Necklace", description: "Handmade beaded necklaces.", whatsapp: "8765551249", instagram: "craftyhandsja", location: "Mandeville", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 135 },
-            { id: 17, name: "Fit Life", category: "Health & Wellness", productName: "Yoga Mats", description: "Eco-friendly yoga mats.", whatsapp: "8765551250", instagram: "fitlifeja", location: "St. Ann", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 90 },
-            { id: 18, name: "Quick Fixes", category: "Services", productName: "Appliance Repair", description: "Reliable appliance repairs.", whatsapp: "8765551251", instagram: "quickfixesja", location: "Spanish Town", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 80 },
-            { id: 19, name: "Tiny Tots", category: "Baby & Kids", productName: "Diapers", description: "Premium baby diapers.", whatsapp: "8765551252", instagram: "tinytotsja", location: "May Pen", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 60 },
-            { id: 20, name: "Island Souvenirs", category: "Tourism & Souvenirs", productName: "Coffee Mug", description: "Jamaican coffee mugs.", whatsapp: "8765551253", instagram: "islandsouvenirs", location: "Falmouth", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 145 },
-            { id: 21, name: "Patty Palace", category: "Food & Drinks", productName: "Beef Patties", description: "Delicious beef patties.", whatsapp: "8765551254", instagram: "pattypalace", location: "Kingston", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 100 },
-            { id: 22, name: "JAM Style", category: "Fashion & Accessories", productName: "Sunglasses", description: "Trendy sunglasses.", whatsapp: "8765551255", instagram: "jamstyle", location: "Ocho Rios", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 110 },
-            { id: 23, name: "Tech Savvy", category: "Tech & Electronics", productName: "Phone Charger", description: "Fast-charging phone chargers.", whatsapp: "8765551256", instagram: "techsavvyja", location: "Montego Bay", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 85 },
-            { id: 24, name: "Kitchen Kings", category: "Home & Kitchen", productName: "Electric Kettle", description: "Stylish electric kettle.", whatsapp: "8765551257", instagram: "kitchenkings", location: "Negril", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 75 },
-            { id: 25, name: "Pure Glow", category: "Beauty & Personal Care", productName: "Face Mask", description: "Natural face masks.", whatsapp: "8765551258", instagram: "pureglowja", location: "Portmore", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 120 },
-            { id: 26, name: "Artisan Alley", category: "Crafts & Gifts", productName: "Painted Canvas", description: "Hand-painted Jamaican art.", whatsapp: "8765551259", instagram: "artisanalley", location: "Mandeville", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 130 },
-            { id: 27, name: "Wellness Way", category: "Health & Wellness", productName: "Herbal Tea", description: "Organic herbal teas.", whatsapp: "8765551260", instagram: "wellnesswayja", location: "St. Ann", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 95 },
-            { id: 28, name: "Service Pros", category: "Services", productName: "Car Wash", description: "Professional car wash services.", whatsapp: "8765551261", instagram: "serviceprosja", location: "Spanish Town", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 70 },
-            { id: 29, name: "Baby Bliss", category: "Baby & Kids", productName: "Toy Set", description: "Safe toy sets for kids.", whatsapp: "8765551262", instagram: "babyblissja", location: "May Pen", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 65 },
-            { id: 30, name: "JAM Treasures", category: "Tourism & Souvenirs", productName: "Wooden Statues", description: "Unique wooden statues.", whatsapp: "8765551263", instagram: "jamtreasures", location: "Falmouth", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 150 }
-        ];
-
-        // Save businesses to local storage
-        function saveBusinesses() {
-            localStorage.setItem('businesses', JSON.stringify(businesses));
+        // Logout function
+        function logout() {
+            localStorage.removeItem('loggedIn');
+            document.getElementById('loginIndicator').style.display = 'none';
+            document.getElementById('logoutLink').style.display = 'none';
+            alert('Logged out successfully');
         }
 
-        // Create business card
-        function createBusinessCard(business) {
-            const card = document.createElement('div');
-            card.className = 'business-card';
-            const fire = business.views > 100 ? '<span class="fire">🔥</span>' : '';
-            card.innerHTML = `
-                <h3>${business.name} ${fire}</h3>
-                <p><strong>Category:</strong> ${business.category}</p>
-                <p><strong>Featured Product:</strong> ${business.productName}</p>
-                <p>${business.description}</p>
-                <div class="contact-links">
-                    <a href="https://wa.me/${business.whatsapp}" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-                    <a href="https://instagram.com/${business.instagram}" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
-                </div>
-                <p><strong>Location:</strong> ${business.location}</p>
-                <img src="${business.displayPhoto}" alt="${business.name} Display Photo">
-                <img src="${business.productPhoto}" alt="${business.productName} Photo">
-                <p class="views"><strong>Views:</strong> <span id="views-${business.id}">${business.views}</span></p>
-                <button onclick="incrementView(${business.id})">View Details</button>
-            `;
-            return card;
+        // Check login for Add Business
+        function checkAddBusiness() {
+            if (!checkLogin()) {
+                showModal('loginModal');
+                return false;
+            }
+            goToSection('business-signup');
+            return false;
         }
 
-        // Load businesses with filters and search
-        let currentFilter = 'All';
-
-        function filterBusinesses(searchQuery = '', filter = currentFilter) {
-            const listings = document.getElementById('businessListings');
-            listings.innerHTML = '';
-            let filtered = businesses;
-
-            if (filter !== 'All') {
-                filtered = filtered.filter(b => b.category === filter);
+        // Show analytics
+        function showAnalytics() {
+            if (!checkLogin()) {
+                showModal('loginModal');
+            } else {
+                showModal('analyticsModal');
+                renderAnalyticsChart();
             }
+        }
 
-            if (searchQuery) {
-                const lowerQuery = searchQuery.toLowerCase();
-                filtered = filtered.filter(b => 
-                    b.name.toLowerCase().includes(lowerQuery) ||
-                    b.category.toLowerCase().includes(lowerQuery) ||
-                    b.productName.toLowerCase().includes(lowerQuery)
-                );
-            }
-
-            filtered.sort((a, b) => b.views - a.views); // Sort by views
-            filtered.forEach((business, index) => {
-                const card = createBusinessCard(business);
-                card.style.animationDelay = `${index * 0.1}s`;
-                listings.appendChild(card);
+        // Render animated chart
+        function renderAnalyticsChart() {
+            const ctx = document.getElementById('analyticsChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+                    datasets: [
+                        {
+                            label: 'Clicks',
+                            data: [10, 15, 20, 25, 30],
+                            borderColor: '#ff6b6b',
+                            backgroundColor: 'rgba(255, 107, 107, 0.2)',
+                        },
+                        {
+                            label: 'Impressions',
+                            data: [100, 150, 200, 250, 300],
+                            borderColor: '#4ecdc4',
+                            backgroundColor: 'rgba(78, 205, 196, 0.2)',
+                        }
+                    ]
+                },
+                options: {
+                    animation: {
+                        duration: 1000,
+                        easing: 'easeInOutQuad'
+                    }
+                }
             });
         }
 
-        function filterByCategory(category) {
-            currentFilter = category;
-            filterBusinesses(document.getElementById('searchInput').value);
+        // Simple navigation function
+        function goToSection(sectionId) {
+            document.querySelectorAll('.form-section, .feed').forEach(section => {
+                section.style.display = 'none';
+            });
+            document.getElementById(sectionId).style.display = 'block';
         }
 
-        function clearFilters() {
-            currentFilter = 'All';
-            document.getElementById('searchInput').value = '';
-            filterBusinesses();
-            document.querySelector('.filters').style.display = 'none'; // Hide filters again
-        }
-
-        // Handle search
-        document.getElementById('searchInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                document.querySelector('.filters').style.display = 'block'; // Show filters on Enter
-                filterBusinesses(this.value);
+        // Initial page load
+        document.addEventListener('DOMContentLoaded', () => {
+            goToSection('home');
+            if (checkLogin()) {
+                document.getElementById('loginIndicator').style.display = 'inline';
+                document.getElementById('logoutLink').style.display = 'inline';
             }
-        });
-
-        document.getElementById('searchButton').addEventListener('click', function() {
-            document.querySelector('.filters').style.display = 'block'; // Show filters on button click
-            filterBusinesses(document.getElementById('searchInput').value);
-        });
-
-        // Handle scroll for search bar
-        let scrollTimeout;
-        window.addEventListener('scroll', () => {
-            const searchBar = document.querySelector('.search-bar');
-            searchBar.classList.add('hidden');
-            clearTimeout(scrollTimeout);
-            scrollTimeout = setTimeout(() => {
-                searchBar.classList.remove('hidden');
-            }, 500); // Reappear after 0.5 seconds of no scroll
-        });
-
-        // Load feed on page load
-        window.onload = function() {
-            filterBusinesses(); // Load all businesses initially
-        };
-
-        // Increment view count
-        function incrementView(id) {
-            const business = businesses.find(b => b.id === id);
-            if (business) {
-                business.views++;
-                saveBusinesses();
-                filterBusinesses(document.getElementById('searchInput').value, currentFilter);
-            }
-        }
-
-        // Handle business submission (fixed)
-        document.getElementById('businessForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const id = Date.now();
-            const name = document.getElementById('bizName').value;
-            const category = document.getElementById('bizCategory').value;
-            const productName = document.getElementById('bizProductName').value;
-            const description = document.getElementById('bizDescription').value;
-            const whatsapp = document.getElementById('bizWhatsApp').value;
-            const instagram = document.getElementById('bizInstagram').value;
-            const location = document.getElementById('bizLocation').value;
-            const displayPhoto = document.getElementById('bizDisplayPhoto').files[0] ? 
-                URL.createObjectURL(document.getElementById('bizDisplayPhoto').files[0]) : '';
-            const productPhoto = document.getElementById('bizProductPhoto').files[0] ? 
-                URL.createObjectURL(document.getElementById('bizProductPhoto').files[0]) : '';
-            const views = 0;
-
-            if (!name || !category || !productName || !description || !whatsapp || !instagram || !location || !displayPhoto || !productPhoto) {
-                alert("Please fill out all required fields, including photos.");
-                return;
-            }
-
-            const newBusiness = { id, name, category, productName, description, whatsapp, instagram, location, displayPhoto, productPhoto, views };
-            businesses.push(newBusiness);
-            saveBusinesses();
-            filterBusinesses(); // Refresh with new business
-            this.reset();
-            document.getElementById('business-signup').style.display = 'none';
-            document.getElementById('home').scrollIntoView({ behavior: 'smooth' });
         });
     </script>
 </body>
