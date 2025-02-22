@@ -87,6 +87,7 @@
             cursor: pointer;
             display: inline-flex;
             align-items: center;
+            position: relative; /* Added for dropdown positioning */
         }
         .nav .profile-icon:hover {
             transform: scale(1.2);
@@ -100,18 +101,17 @@
             margin-left: 5px;
         }
         .nav .dropdown {
-            position: relative;
-            display: none;
-        }
-        .nav .dropdown-content {
-            display: none;
             position: absolute;
+            display: none;
             right: 0;
             background: white;
             min-width: 160px;
             box-shadow: 0 8px 16px rgba(0,0,0,0.2);
             border-radius: 10px;
             z-index: 1;
+        }
+        .nav .dropdown-content {
+            display: block; /* Changed to block for dropdown structure */
         }
         .nav .dropdown-content a {
             color: #4ecdc4;
@@ -129,7 +129,7 @@
         .nav .dropdown-content a:last-child {
             border-bottom: none;
         }
-        .nav .profile-icon:hover .dropdown-content {
+        .nav .profile-icon:hover .dropdown {
             display: block;
         }
         .modal {
@@ -579,7 +579,7 @@
     <div class="nav">
         <div class="nav-items">
             <a href="#home" class="home-link">Home</a>
-            <i class="fas fa-user profile-icon" id="profileIcon" style="display: none;" onclick="showProfilePopup()"></i>
+            <i class="fas fa-user profile-icon" id="profileIcon" style="display: inline;" onclick="showProfilePopup()"></i>
         </div>
     </div>
 
@@ -714,7 +714,6 @@
             localStorage.setItem('currentUser', username);
             currentUser = username;
             document.getElementById('profileIcon').style.display = 'inline';
-            document.getElementById('authButton').style.display = 'none';
             closeModal('loginModal');
             updateProfile();
         }
@@ -744,7 +743,6 @@
                 localStorage.setItem('currentUser', username);
                 currentUser = username;
                 document.getElementById('profileIcon').style.display = 'inline';
-                document.getElementById('authButton').style.display = 'none';
                 closeModal('loginModal');
                 updateProfile();
             } else {
@@ -758,7 +756,6 @@
             localStorage.removeItem('currentUser');
             currentUser = null;
             document.getElementById('profileIcon').style.display = 'none';
-            document.getElementById('authButton').style.display = 'inline';
             document.getElementById('profilePopup').style.display = 'none';
             document.getElementById('fullProfile').style.display = 'none';
             alert('Logged out successfully');
@@ -1034,11 +1031,13 @@
         // Initial page load
         document.addEventListener('DOMContentLoaded', () => {
             goToSection('home');
+            const profileIcon = document.getElementById('profileIcon');
             if (checkLogin()) {
-                document.getElementById('profileIcon').style.display = 'inline';
-                document.getElementById('authButton').style.display = 'none';
+                profileIcon.style.display = 'inline';
                 currentUser = localStorage.getItem('currentUser');
                 updateProfile();
+            } else {
+                profileIcon.style.display = 'inline'; // Ensure profile icon is always visible initially
             }
             filterBusinesses(); // Load all businesses initially
         });
