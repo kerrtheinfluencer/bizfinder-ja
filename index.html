@@ -27,8 +27,13 @@
             background: linear-gradient(90deg, #ff6b6b 0%, #4ecdc4 100%);
             border-bottom: 4px solid #ff8a8a;
             box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+            animation: headerGlow 2s infinite alternate;
             position: relative;
             z-index: 2;
+        }
+        @keyframes headerGlow {
+            0% { box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
+            100% { box-shadow: 0 6px 30px rgba(255, 107, 107, 0.5); }
         }
         .nav {
             text-align: center;
@@ -65,14 +70,63 @@
         .modal-content {
             background: white;
             padding: 40px;
-            border-radius: 15px;
+            border-radius: 20px;
             text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
             animation: popIn 0.5s ease;
+            width: 90%;
+            max-width: 400px;
         }
         @keyframes popIn {
             0% { transform: scale(0.8); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
+        }
+        .modal-content h2 {
+            color: #ff6b6b;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        .modal-content input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            box-sizing: border-box;
+            background: #fafafa;
+            font-size: 1em;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .modal-content input:focus {
+            border-color: #4ecdc4;
+            box-shadow: 0 0 10px rgba(78, 205, 196, 0.3);
+            outline: none;
+        }
+        .modal-content button {
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin: 5px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .modal-content button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+        }
+        .modal-content a {
+            color: #4ecdc4;
+            text-decoration: none;
+            font-size: 0.9em;
+            margin-top: 10px;
+            display: block;
+        }
+        .modal-content a:hover {
+            color: #ff6b6b;
         }
         .form-section {
             background: rgba(255, 255, 255, 0.95);
@@ -178,6 +232,7 @@
             <input type="password" id="loginPassword" placeholder="Password" required>
             <button onclick="login()">Login</button>
             <button onclick="closeModal('loginModal')">Close</button>
+            <a href="#" onclick="showModal('signupModal'); closeModal('loginModal')">Don’t have an account? Sign Up</a>
         </div>
     </div>
 
@@ -198,7 +253,6 @@
     <div class="nav">
         <a href="#home">Home</a>
         <a href="#business-signup" onclick="checkAddBusiness()">Add Business</a>
-        <a href="#user-signup">Get Discount</a>
         <a href="#" onclick="showAnalytics()">Stats</a>
         <span id="loginIndicator" style="display: none;">Logged In</span>
         <a href="#" id="logoutLink" style="display: none;" onclick="logout()">Logout</a>
