@@ -42,9 +42,10 @@
             background: rgba(255, 255, 255, 0.9);
             border-radius: 15px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            position: relative;
         }
         .nav a, .nav span {
-            margin: 0 25px;
+            margin: 0 15px;
             text-decoration: none;
             color: #4ecdc4;
             font-weight: 600;
@@ -53,6 +54,19 @@
         }
         .nav a:hover {
             transform: scale(1.1);
+            color: #ff6b6b;
+        }
+        .nav .profile-icon {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 1.5em;
+            color: #4ecdc4;
+            cursor: pointer;
+            transition: transform 0.3s, color 0.3s;
+        }
+        .nav .profile-icon:hover {
+            transform: scale(1.2);
             color: #ff6b6b;
         }
         .modal {
@@ -210,6 +224,37 @@
         canvas {
             margin-top: 20px;
         }
+        .profile-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .profile-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            width: 90%;
+            max-width: 400px;
+        }
+        .profile-content h2 {
+            color: #ff6b6b;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        .profile-content p {
+            color: #2c3e50;
+            font-size: 1.1em;
+            margin: 10px 0;
+        }
     </style>
 </head>
 <body>
@@ -245,6 +290,15 @@
         </div>
     </div>
 
+    <!-- Profile Modal -->
+    <div id="profileModal" class="profile-modal">
+        <div class="profile-content">
+            <h2>Your Profile</h2>
+            <div id="profileDetails"></div>
+            <button onclick="closeModal('profileModal')">Close</button>
+        </div>
+    </div>
+
     <div class="header">
         <h1>BizFinder JA</h1>
         <p>Discover Jamaica’s Hottest Businesses</p>
@@ -254,6 +308,7 @@
         <a href="#home">Home</a>
         <a href="#business-signup" onclick="checkAddBusiness()">Add Business</a>
         <a href="#" onclick="showAnalytics()">Stats</a>
+        <i class="fas fa-user profile-icon" id="profileIcon" style="display: none;" onclick="showProfile()"></i>
         <span id="loginIndicator" style="display: none;">Logged In</span>
         <a href="#" id="logoutLink" style="display: none;" onclick="logout()">Logout</a>
     </div>
@@ -307,10 +362,11 @@
     <script>
         // Simulated user database (in localStorage)
         let users = JSON.parse(localStorage.getItem('users')) || {};
+        let currentUser = null;
 
         // Check if user is logged in
         function checkLogin() {
-            return localStorage.getItem('loggedIn') === 'true';
+            return localStorage.getItem('loggedIn') === 'true' && localStorage.getItem('currentUser');
         }
 
         // Show modal
@@ -331,7 +387,7 @@
                 if (users[username]) {
                     alert('Username already exists');
                 } else {
-                    users[username] = password;
+                    users[username] = { password: password, type: 'operator' }; // Default to operator for simplicity
                     localStorage.setItem('users', JSON.stringify(users));
                     alert('Sign up successful! Please log in.');
                     closeModal('signupModal');
@@ -343,11 +399,15 @@
         function login() {
             const username = document.getElementById('loginUsername').value;
             const password = document.getElementById('loginPassword').value;
-            if (users[username] && users[username] === password) {
+            if (users[username] && users[username].password === password) {
                 localStorage.setItem('loggedIn', 'true');
+                localStorage.setItem('currentUser', username);
+                currentUser = username;
                 document.getElementById('loginIndicator').style.display = 'inline';
+                document.getElementById('profileIcon').style.display = 'inline';
                 document.getElementById('logoutLink').style.display = 'inline';
                 closeModal('loginModal');
+                updateProfile();
             } else {
                 alert('Invalid username or password');
             }
@@ -356,8 +416,12 @@
         // Logout function
         function logout() {
             localStorage.removeItem('loggedIn');
+            localStorage.removeItem('currentUser');
+            currentUser = null;
             document.getElementById('loginIndicator').style.display = 'none';
+            document.getElementById('profileIcon').style.display = 'none';
             document.getElementById('logoutLink').style.display = 'none';
+            document.getElementById('profileModal').style.display = 'none';
             alert('Logged out successfully');
         }
 
@@ -378,6 +442,40 @@
             } else {
                 showModal('analyticsModal');
                 renderAnalyticsChart();
+            }
+        }
+
+        // Show profile
+        function showProfile() {
+            if (checkLogin()) {
+                showModal('profileModal');
+                updateProfile();
+            } else {
+                showModal('loginModal');
+            }
+        }
+
+        // Update profile content
+        function updateProfile() {
+            if (checkLogin() && currentUser) {
+                const user = users[currentUser];
+                const profileDetails = document.getElementById('profileDetails');
+                if (user.type === 'operator') {
+                    // Find the business for this operator (simplified assumption: first business with matching username)
+                    const business = businesses.find(b => b.name === currentUser) || { name: 'No business added yet' };
+                    profileDetails.innerHTML = `
+                        <p>Username: ${currentUser}</p>
+                        <p>Business Name: ${business.name}</p>
+                        <p>Category: ${business.category || 'N/A'}</p>
+                        <p>Location: ${business.location || 'N/A'}</p>
+                    `;
+                } else {
+                    profileDetails.innerHTML = `
+                        <p>Username: ${currentUser}</p>
+                        <p>Name: ${localStorage.getItem('custName') || 'N/A'}</p>
+                        <p>Email: ${localStorage.getItem('custEmail') || 'N/A'}</p>
+                    `;
+                }
             }
         }
 
@@ -425,7 +523,10 @@
             goToSection('home');
             if (checkLogin()) {
                 document.getElementById('loginIndicator').style.display = 'inline';
+                document.getElementById('profileIcon').style.display = 'inline';
                 document.getElementById('logoutLink').style.display = 'inline';
+                currentUser = localStorage.getItem('currentUser');
+                updateProfile();
             }
         });
     </script>
