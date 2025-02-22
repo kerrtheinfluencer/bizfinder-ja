@@ -400,13 +400,36 @@
             document.getElementById('loginModal').style.display = 'flex';
         }
 
-        // Go to section
+        // Go to section and handle hash changes
         function goToSection(sectionId) {
             closeModal();
             const section = document.getElementById(sectionId);
             section.style.display = 'block';
             section.scrollIntoView({ behavior: 'smooth' });
+            window.location.hash = sectionId; // Update URL
         }
+
+        // Handle hash changes
+        window.addEventListener('hashchange', () => {
+            const hash = window.location.hash.substring(1); // Remove '#'
+            if (hash === 'business-signup' || hash === 'user-signup') {
+                goToSection(hash);
+            } else {
+                closeModal();
+                document.querySelectorAll('.form-section').forEach(section => section.style.display = 'none');
+                document.getElementById('home').scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+
+        // Check hash on page load
+        window.onload = () => {
+            const hash = window.location.hash.substring(1);
+            if (hash === 'business-signup' || hash === 'user-signup') {
+                goToSection(hash);
+            } else {
+                filterBusinesses(); // Load all businesses initially
+            }
+        };
 
         // Handle Login
         function login() {
