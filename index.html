@@ -62,15 +62,13 @@
             justify-content: center;
             flex-wrap: wrap;
         }
-        .nav a, .nav button {
+        .nav a, .nav i {
             margin: 0 15px;
             text-decoration: none;
             color: #4ecdc4;
             font-weight: 700;
             font-size: 1.2em;
             transition: transform 0.3s, color 0.3s;
-            background: none;
-            border: none;
             cursor: pointer;
             padding: 5px 0;
         }
@@ -79,57 +77,63 @@
             color: #ff6b6b;
             text-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
-        .nav a.home-link:hover, .nav a:hover, .nav button:hover {
+        .nav a.home-link:hover, .nav a:hover, .nav i:hover {
             transform: scale(1.1);
             color: #ff6b6b;
-        }
-        .nav .profile-icon, .nav .login-indicator {
-            margin-left: 15px;
-            display: inline-flex;
-            align-items: center;
         }
         .nav .profile-icon {
             font-size: 1.5em;
             color: #4ecdc4;
             cursor: pointer;
-            transition: transform 0.3s, color 0.3s;
+            display: inline-flex;
+            align-items: center;
         }
         .nav .profile-icon:hover {
             transform: scale(1.2);
             color: #ff6b6b;
         }
-        .nav .login-indicator {
+        .nav .profile-icon .login-indicator {
             width: 10px;
             height: 10px;
             background-color: #2ecc71;
             border-radius: 50%;
             margin-left: 5px;
         }
-        .nav a#logoutLink {
-            margin: 0 15px;
-            color: #ff6b6b;
-            font-weight: 600;
-            font-size: 1.1em;
-            transition: transform 0.3s, color 0.3s;
-        }
-        .nav a#logoutLink:hover {
-            transform: scale(1.1);
-            color: #4ecdc4;
-        }
-        .nav a#addBusinessLink, .nav a#statsLink {
+        .nav .dropdown {
+            position: relative;
             display: none;
-            margin: 0 15px;
-            color: #4ecdc4;
-            font-weight: 600;
-            font-size: 1.1em;
-            transition: transform 0.3s, color 0.3s;
         }
-        .nav a#addBusinessLink:hover, .nav a#statsLink:hover {
-            transform: scale(1.1);
+        .nav .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background: white;
+            min-width: 160px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            border-radius: 10px;
+            z-index: 1;
+        }
+        .nav .dropdown-content a {
+            color: #4ecdc4;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 1em;
+            font-weight: 600;
+            border-bottom: 1px solid #ddd;
+        }
+        .nav .dropdown-content a:hover {
+            background-color: #f1f1f1;
             color: #ff6b6b;
+        }
+        .nav .dropdown-content a:last-child {
+            border-bottom: none;
+        }
+        .nav .profile-icon:hover .dropdown-content {
+            display: block;
         }
         .search-bar {
-            margin: 10px 0 20px; /* Positioned directly below nav, with bottom margin for spacing */
+            margin: 10px 0 20px;
             padding: 10px;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
@@ -440,8 +444,8 @@
     <div id="profilePopup" class="popup">
         <div class="popup-content">
             <h2>Profile Options</h2>
-            <button onclick="logout()">Logout</button>
-            <button onclick="showFullProfile()">View Full Profile</button>
+            <a href="#" onclick="logout(); closeModal('profilePopup')">Logout</a>
+            <a href="#" onclick="showFullProfile(); closeModal('profilePopup')">View Full Profile</a>
         </div>
     </div>
 
@@ -462,10 +466,7 @@
         <div class="nav-items">
             <a href="#home" class="home-link">Home</a>
             <i class="fas fa-user profile-icon" id="profileIcon" style="display: none;" onclick="showProfilePopup()"></i>
-            <span class="login-indicator" id="loginIndicator" style="display: none;"></span>
-            <a href="#" id="logoutLink" style="display: none;" onclick="logout()">Logout</a>
-            <a href="#business-signup" id="addBusinessLink" style="display: none;" onclick="checkAddBusiness()">Add Business</a>
-            <a href="#" id="statsLink" style="display: none;" onclick="showAnalytics()">Stats</a>
+            <button id="authButton" class="auth-button" style="display: inline;" onclick="showAuthModal()">Login/Sign Up</button>
         </div>
     </div>
 
@@ -595,11 +596,7 @@
             localStorage.setItem('loggedIn', 'true');
             localStorage.setItem('currentUser', username);
             currentUser = username;
-            document.getElementById('loginIndicator').style.display = 'inline';
             document.getElementById('profileIcon').style.display = 'inline';
-            document.getElementById('logoutLink').style.display = 'inline';
-            document.getElementById('addBusinessLink').style.display = 'inline';
-            document.getElementById('statsLink').style.display = 'inline';
             document.getElementById('authButton').style.display = 'none';
             closeModal('loginModal');
             updateProfile();
@@ -629,11 +626,7 @@
                 localStorage.setItem('loggedIn', 'true');
                 localStorage.setItem('currentUser', username);
                 currentUser = username;
-                document.getElementById('loginIndicator').style.display = 'inline';
                 document.getElementById('profileIcon').style.display = 'inline';
-                document.getElementById('logoutLink').style.display = 'inline';
-                document.getElementById('addBusinessLink').style.display = 'inline';
-                document.getElementById('statsLink').style.display = 'inline';
                 document.getElementById('authButton').style.display = 'none';
                 closeModal('loginModal');
                 updateProfile();
@@ -647,11 +640,7 @@
             localStorage.removeItem('loggedIn');
             localStorage.removeItem('currentUser');
             currentUser = null;
-            document.getElementById('loginIndicator').style.display = 'none';
             document.getElementById('profileIcon').style.display = 'none';
-            document.getElementById('logoutLink').style.display = 'none';
-            document.getElementById('addBusinessLink').style.display = 'none';
-            document.getElementById('statsLink').style.display = 'none';
             document.getElementById('authButton').style.display = 'inline';
             document.getElementById('profilePopup').style.display = 'none';
             document.getElementById('fullProfile').style.display = 'none';
@@ -929,11 +918,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             goToSection('home');
             if (checkLogin()) {
-                document.getElementById('loginIndicator').style.display = 'inline';
                 document.getElementById('profileIcon').style.display = 'inline';
-                document.getElementById('logoutLink').style.display = 'inline';
-                document.getElementById('addBusinessLink').style.display = 'inline';
-                document.getElementById('statsLink').style.display = 'inline';
                 document.getElementById('authButton').style.display = 'none';
                 currentUser = localStorage.getItem('currentUser');
                 updateProfile();
