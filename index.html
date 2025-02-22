@@ -87,7 +87,7 @@
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            position: relative; /* Added for dropdown positioning */
+            position: relative;
         }
         .nav .profile-icon:hover {
             transform: scale(1.2);
@@ -99,6 +99,7 @@
             background-color: #2ecc71;
             border-radius: 50%;
             margin-left: 5px;
+            display: none; /* Initially hidden, shown when logged in */
         }
         .nav .dropdown {
             position: absolute;
@@ -111,7 +112,7 @@
             z-index: 1;
         }
         .nav .dropdown-content {
-            display: block; /* Changed to block for dropdown structure */
+            display: block;
         }
         .nav .dropdown-content a {
             color: #4ecdc4;
@@ -503,7 +504,7 @@
             font-size: 1.1em;
             margin: 10px 0;
         }
-        .full-profile .products-list {
+        .full-profile .products-list, .full-profile .analytics-section {
             margin: 20px 0;
         }
         .full-profile .products-list img {
@@ -568,6 +569,7 @@
         <h2>Your Full Profile</h2>
         <div id="fullProfileDetails"></div>
         <div id="productsList" class="products-list"></div>
+        <div id="analyticsSection" class="analytics-section"></div>
         <button onclick="hideFullProfile()">Back to Feed</button>
     </div>
 
@@ -713,7 +715,10 @@
             localStorage.setItem('loggedIn', 'true');
             localStorage.setItem('currentUser', username);
             currentUser = username;
-            document.getElementById('profileIcon').style.display = 'inline';
+            const profileIcon = document.getElementById('profileIcon');
+            const loginIndicator = profileIcon.querySelector('.login-indicator');
+            profileIcon.style.display = 'inline';
+            loginIndicator.style.display = 'inline'; // Show green dot when logged in
             closeModal('loginModal');
             updateProfile();
         }
@@ -742,7 +747,10 @@
                 localStorage.setItem('loggedIn', 'true');
                 localStorage.setItem('currentUser', username);
                 currentUser = username;
-                document.getElementById('profileIcon').style.display = 'inline';
+                const profileIcon = document.getElementById('profileIcon');
+                const loginIndicator = profileIcon.querySelector('.login-indicator');
+                profileIcon.style.display = 'inline';
+                loginIndicator.style.display = 'inline'; // Show green dot when logged in
                 closeModal('loginModal');
                 updateProfile();
             } else {
@@ -755,7 +763,10 @@
             localStorage.removeItem('loggedIn');
             localStorage.removeItem('currentUser');
             currentUser = null;
-            document.getElementById('profileIcon').style.display = 'none';
+            const profileIcon = document.getElementById('profileIcon');
+            const loginIndicator = profileIcon.querySelector('.login-indicator');
+            profileIcon.style.display = 'inline';
+            loginIndicator.style.display = 'none'; // Hide green dot when logged out
             document.getElementById('profilePopup').style.display = 'none';
             document.getElementById('fullProfile').style.display = 'none';
             alert('Logged out successfully');
@@ -811,14 +822,15 @@
                 const user = users[currentUser];
                 const fullProfileDetails = document.getElementById('fullProfileDetails');
                 const productsList = document.getElementById('productsList');
+                const analyticsSection = document.getElementById('analyticsSection');
                 if (user.type === 'operator') {
                     // Find the business for this operator
                     const business = businesses.find(b => b.name === currentUser) || { name: 'No business added yet' };
                     fullProfileDetails.innerHTML = `
-                        <p>Username: ${currentUser}</p>
-                        <p>Business Name: ${business.name}</p>
-                        <p>Category: ${business.category || 'N/A'}</p>
-                        <p>Location: ${business.location || 'N/A'}</p>
+                        <p><strong>Username:</strong> ${currentUser}</p>
+                        <p><strong>Business Name:</strong> ${business.name}</p>
+                        <p><strong>Category:</strong> ${business.category || 'N/A'}</p>
+                        <p><strong>Location:</strong> ${business.location || 'N/A'}</p>
                     `;
                     // Show all products for this business
                     productsList.innerHTML = '<h3>Your Products</h3>';
@@ -826,8 +838,8 @@
                     if (businessProducts.length > 0) {
                         businessProducts.forEach(b => {
                             productsList.innerHTML += `
-                                <div>
-                                    <img src="${b.productPhoto}" alt="${b.productName}">
+                                <div style="display: inline-block; margin: 10px; text-align: center;">
+                                    <img src="${b.productPhoto}" alt="${b.productName}" style="max-width: 150px; height: auto; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
                                     <p><strong>${b.productName}</strong></p>
                                     <p>${b.description}</p>
                                 </div>
@@ -837,20 +849,19 @@
                         productsList.innerHTML += '<p>No products added yet.</p>';
                     }
                     // Add analytics for operators
-                    const analyticsSection = document.createElement('div');
                     analyticsSection.innerHTML = `
                         <h3>Analytics</h3>
                         <canvas id="fullAnalyticsChart" width="400" height="200"></canvas>
                     `;
-                    fullProfileDetails.appendChild(analyticsSection);
                     renderFullAnalyticsChart();
                 } else {
                     fullProfileDetails.innerHTML = `
-                        <p>Username: ${currentUser}</p>
-                        <p>Name: ${localStorage.getItem('custName') || 'N/A'}</p>
-                        <p>Email: ${localStorage.getItem('custEmail') || 'N/A'}</p>
+                        <p><strong>Username:</strong> ${currentUser}</p>
+                        <p><strong>Name:</strong> ${localStorage.getItem('custName') || 'N/A'}</p>
+                        <p><strong>Email:</strong> ${localStorage.getItem('custEmail') || 'N/A'}</p>
                     `;
                     productsList.innerHTML = '<p>Customers do not have products to display.</p>';
+                    analyticsSection.innerHTML = ''; // No analytics for customers
                 }
             }
         }
@@ -881,7 +892,9 @@
                     animation: {
                         duration: 1000,
                         easing: 'easeInOutQuad'
-                    }
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false
                 }
             });
         }
@@ -912,7 +925,9 @@
                     animation: {
                         duration: 1000,
                         easing: 'easeInOutQuad'
-                    }
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false
                 }
             });
         }
@@ -1032,12 +1047,15 @@
         document.addEventListener('DOMContentLoaded', () => {
             goToSection('home');
             const profileIcon = document.getElementById('profileIcon');
+            const loginIndicator = profileIcon.querySelector('.login-indicator');
             if (checkLogin()) {
                 profileIcon.style.display = 'inline';
+                loginIndicator.style.display = 'inline'; // Show green dot when logged in
                 currentUser = localStorage.getItem('currentUser');
                 updateProfile();
             } else {
-                profileIcon.style.display = 'inline'; // Ensure profile icon is always visible initially
+                profileIcon.style.display = 'inline'; // Ensure profile icon is visible when not logged in
+                loginIndicator.style.display = 'none'; // Hide green dot when not logged in
             }
             filterBusinesses(); // Load all businesses initially
         });
