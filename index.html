@@ -46,14 +46,28 @@
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            transition: top 0.3s ease, opacity 0.3s ease;
+            transition: opacity 0.3s ease;
             z-index: 1;
         }
         .search-bar.hidden {
             opacity: 0;
-            top: -60px;
+        }
+        .search-button {
+            margin-left: 10px;
+            padding: 8px 15px;
+            background: #4ecdc4;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+        }
+        .search-button:hover {
+            transform: scale(1.05);
+            background: #ff6b6b;
         }
         .filters {
+            display: none; /* Hidden by default */
             margin: 20px 0;
             padding: 15px;
             background: rgba(255, 255, 255, 0.95);
@@ -181,19 +195,19 @@
             transform: scale(1.05);
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
-        #signupModal {
+        #signupModal, #loginModal {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background: rgba(0,0,0,0.8);
-            display: flex;
+            display: none;
             justify-content: center;
             align-items: center;
             z-index: 1000;
         }
-        #signupModal div {
+        #signupModal div, #loginModal div {
             background: white;
             padding: 40px;
             border-radius: 15px;
@@ -205,10 +219,10 @@
             0% { transform: scale(0.8); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
         }
-        #signupModal h2 {
+        #signupModal h2, #loginModal h2 {
             color: #2c3e50;
         }
-        #signupModal button {
+        #signupModal button, #loginModal button {
             margin: 15px 10px;
         }
         .form-section {
@@ -228,6 +242,14 @@
             border-radius: 6px;
             display: none;
         }
+        #operatorDashboard, #operatorProfile, #customerProfile {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
     </style>
 </head>
 <body>
@@ -241,13 +263,23 @@
         </div>
     </div>
 
+    <div id="loginModal">
+        <div>
+            <h2>Operator Login</h2>
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button onclick="login()">Login</button>
+        </div>
+    </div>
+
     <div class="header">
         <h1>BizFinder JA</h1>
         <p>Discover Jamaica’s Hottest Businesses</p>
     </div>
 
     <div class="search-bar">
-        <input type="text" id="searchInput" placeholder="Search businesses, products, or categories..." style="width: 100%; padding: 10px; border: none; border-radius: 15px;">
+        <input type="text" id="searchInput" placeholder="Search businesses, products, or categories..." style="width: 90%; padding: 10px; border: none; border-radius: 15px; vertical-align: middle;">
+        <button type="button" id="searchButton" class="search-button">Search</button>
     </div>
 
     <div class="filters">
@@ -269,6 +301,7 @@
         <a href="#home">Home</a>
         <a href="#business-signup">Add Business</a>
         <a href="#user-signup">Get Discount</a>
+        <a href="#" onclick="showLoginModal()">Login</a>
     </div>
 
     <div class="container">
@@ -313,13 +346,14 @@
 
         <!-- User Sign-Up Section (Hidden) -->
         <div class="form-section" id="user-signup">
-            <h2>Get Your Discount Code</h2>
+            <h2>Get Your Discount Code & Updates</h2>
             <p>Sign up now and enjoy 10% off your next purchase!</p>
             <form id="userForm">
                 <label>Name:</label>
                 <input type="text" id="userName" required>
                 <label>Email:</label>
                 <input type="email" id="userEmail" required>
+                <label><input type="checkbox" id="emailUpdates"> Get Email Updates</label>
                 <button type="submit">Claim Your Code</button>
             </form>
             <p class="discount-message" id="discountMessage">Thanks for signing up! Use code <strong>BIZFINDER10</strong> for 10% off!</p>
@@ -329,12 +363,41 @@
         <div class="feed" id="home">
             <div id="businessListings"></div>
         </div>
+
+        <!-- Operator Dashboard -->
+        <div id="operatorDashboard" style="display: none;">
+            <h2>Operator Dashboard</h2>
+            <p>Views: <span id="operatorViews">0</span></p>
+            <p>Clicks: <span id="operatorClicks">0</span></p>
+            <input type="file" id="extraProductPhoto" accept="image/*">
+            <button onclick="uploadPhoto()">Upload Photo</button>
+        </div>
+
+        <!-- Operator Profile -->
+        <div id="operatorProfile" style="display: none;">
+            <h2>Your Operator Profile</h2>
+            <p>Name: <span id="opName"></span></p>
+            <p>Business: <span id="opBusiness"></span></p>
+        </div>
+
+        <!-- Customer Profile -->
+        <div id="customerProfile" style="display: none;">
+            <h2>Your Customer Profile</h2>
+            <p>Name: <span id="custName"></span></p>
+            <p>Email: <span id="custEmail"></span></p>
+        </div>
     </div>
 
     <script>
         // Close modal
         function closeModal() {
             document.getElementById('signupModal').style.display = 'none';
+            document.getElementById('loginModal').style.display = 'none';
+        }
+
+        // Show login modal
+        function showLoginModal() {
+            document.getElementById('loginModal').style.display = 'flex';
         }
 
         // Go to section
@@ -345,16 +408,53 @@
             section.scrollIntoView({ behavior: 'smooth' });
         }
 
+        // Handle Login
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            if (username && password) {
+                document.getElementById('loginModal').style.display = 'none';
+                document.getElementById('operatorDashboard').style.display = 'block';
+                document.getElementById('operatorProfile').style.display = 'block';
+                document.getElementById('opName').textContent = username;
+                document.getElementById('opBusiness').textContent = 'Your Business Name'; // Replace with dynamic business name later
+                document.getElementById('operatorViews').textContent = '50';
+                document.getElementById('operatorClicks').textContent = '20';
+            }
+        }
+
         // Handle User Sign-Up
         document.getElementById('userForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            const name = document.getElementById('userName').value;
+            const email = document.getElementById('userEmail').value;
+            const updates = document.getElementById('emailUpdates').checked;
+            if (updates) {
+                const subscriptions = JSON.parse(localStorage.getItem('emailSubscriptions') || '[]');
+                if (!subscriptions.includes(email)) {
+                    subscriptions.push(email);
+                    localStorage.setItem('emailSubscriptions', JSON.stringify(subscriptions));
+                    alert('You’ll receive updates from operators! (Simulated)');
+                }
+            }
             document.getElementById('discountMessage').style.display = 'block';
+            document.getElementById('customerProfile').style.display = 'block';
+            document.getElementById('custName').textContent = name;
+            document.getElementById('custEmail').textContent = email;
             this.reset();
             setTimeout(() => {
                 document.getElementById('user-signup').style.display = 'none';
                 document.getElementById('home').scrollIntoView({ behavior: 'smooth' });
             }, 2000);
         });
+
+        // Handle Photo Upload (Simulated)
+        function uploadPhoto() {
+            const photo = document.getElementById('extraProductPhoto').files[0];
+            if (photo) {
+                alert('Photo uploaded successfully! (Simulated)');
+            }
+        }
 
         // Business data (30 dummy businesses)
         let businesses = JSON.parse(localStorage.getItem('businesses')) || [
@@ -383,7 +483,7 @@
             { id: 23, name: "Tech Savvy", category: "Tech & Electronics", productName: "Phone Charger", description: "Fast-charging phone chargers.", whatsapp: "8765551256", instagram: "techsavvyja", location: "Montego Bay", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 85 },
             { id: 24, name: "Kitchen Kings", category: "Home & Kitchen", productName: "Electric Kettle", description: "Stylish electric kettle.", whatsapp: "8765551257", instagram: "kitchenkings", location: "Negril", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 75 },
             { id: 25, name: "Pure Glow", category: "Beauty & Personal Care", productName: "Face Mask", description: "Natural face masks.", whatsapp: "8765551258", instagram: "pureglowja", location: "Portmore", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 120 },
-            { id: 26, name: "Artisan Alley", category: "Crafts & Gifts", productName: "Painted Canvas", description: "Hand-painted Jamaican art.", whatsapp: "8765551259", instagram: "artisinalley", location: "Mandeville", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 130 },
+            { id: 26, name: "Artisan Alley", category: "Crafts & Gifts", productName: "Painted Canvas", description: "Hand-painted Jamaican art.", whatsapp: "8765551259", instagram: "artisanalley", location: "Mandeville", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 130 },
             { id: 27, name: "Wellness Way", category: "Health & Wellness", productName: "Herbal Tea", description: "Organic herbal teas.", whatsapp: "8765551260", instagram: "wellnesswayja", location: "St. Ann", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 95 },
             { id: 28, name: "Service Pros", category: "Services", productName: "Car Wash", description: "Professional car wash services.", whatsapp: "8765551261", instagram: "serviceprosja", location: "Spanish Town", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 70 },
             { id: 29, name: "Baby Bliss", category: "Baby & Kids", productName: "Toy Set", description: "Safe toy sets for kids.", whatsapp: "8765551262", instagram: "babyblissja", location: "May Pen", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 65 },
@@ -456,11 +556,20 @@
             currentFilter = 'All';
             document.getElementById('searchInput').value = '';
             filterBusinesses();
+            document.querySelector('.filters').style.display = 'none'; // Hide filters again
         }
 
         // Handle search
-        document.getElementById('searchInput').addEventListener('input', function(e) {
-            filterBusinesses(e.target.value);
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.querySelector('.filters').style.display = 'block'; // Show filters on Enter
+                filterBusinesses(this.value);
+            }
+        });
+
+        document.getElementById('searchButton').addEventListener('click', function() {
+            document.querySelector('.filters').style.display = 'block'; // Show filters on button click
+            filterBusinesses(document.getElementById('searchInput').value);
         });
 
         // Handle scroll for search bar
@@ -473,6 +582,11 @@
                 searchBar.classList.remove('hidden');
             }, 500); // Reappear after 0.5 seconds of no scroll
         });
+
+        // Load feed on page load
+        window.onload = function() {
+            filterBusinesses(); // Load all businesses initially
+        };
 
         // Increment view count
         function incrementView(id) {
@@ -495,8 +609,10 @@
             const whatsapp = document.getElementById('bizWhatsApp').value;
             const instagram = document.getElementById('bizInstagram').value;
             const location = document.getElementById('bizLocation').value;
-            const displayPhoto = URL.createObjectURL(document.getElementById('bizDisplayPhoto').files[0]);
-            const productPhoto = URL.createObjectURL(document.getElementById('bizProductPhoto').files[0]);
+            const displayPhoto = document.getElementById('bizDisplayPhoto').files[0] ? 
+                URL.createObjectURL(document.getElementById('bizDisplayPhoto').files[0]) : '';
+            const productPhoto = document.getElementById('bizProductPhoto').files[0] ? 
+                URL.createObjectURL(document.getElementById('bizProductPhoto').files[0]) : '';
             const views = 0;
 
             if (!name || !category || !productName || !description || !whatsapp || !instagram || !location || !displayPhoto || !productPhoto) {
@@ -512,9 +628,6 @@
             document.getElementById('business-signup').style.display = 'none';
             document.getElementById('home').scrollIntoView({ behavior: 'smooth' });
         });
-
-        // Load businesses on page load
-        loadBusinesses();
     </script>
 </body>
 </html>
