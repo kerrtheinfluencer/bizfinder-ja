@@ -27,6 +27,8 @@
             border-bottom: 4px solid #ff8a8a;
             box-shadow: 0 6px 20px rgba(0,0,0,0.2);
             animation: headerGlow 2s infinite alternate;
+            position: relative;
+            z-index: 2;
         }
         @keyframes headerGlow {
             0% { box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
@@ -39,24 +41,20 @@
             color: #fff;
         }
         .search-bar {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80%;
-            max-width: 500px;
+            margin: 20px 0;
             padding: 10px;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            z-index: 999;
-            transition: top 0.3s ease;
+            transition: top 0.3s ease, opacity 0.3s ease;
+            z-index: 1;
         }
         .search-bar.hidden {
+            opacity: 0;
             top: -60px;
         }
         .filters {
-            margin: 60px 0 20px;
+            margin: 20px 0;
             padding: 15px;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
@@ -362,7 +360,33 @@
         let businesses = JSON.parse(localStorage.getItem('businesses')) || [
             { id: 1, name: "Taste of Mobay", category: "Food & Drinks", productName: "Jerk Chicken", description: "Authentic jerk chicken and patties.", whatsapp: "8765551234", instagram: "tasteofmobay", location: "Montego Bay", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 150 },
             { id: 2, name: "Rasta Threads", category: "Fashion & Accessories", productName: "Rasta Tee", description: "Vibrant Rasta-themed t-shirts.", whatsapp: "8765551235", instagram: "rastathreads", location: "Kingston", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 120 },
-            // ... (remaining 28 businesses from your last code, omitted for brevity but included in the full file)
+            { id: 3, name: "TechTrend JA", category: "Tech & Electronics", productName: "Wireless Earbuds", description: "High-quality wireless earbuds.", whatsapp: "8765551236", instagram: "techtrendja", location: "Ocho Rios", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 90 },
+            { id: 4, name: "Island Kitchen Co.", category: "Home & Kitchen", productName: "Blender", description: "Powerful blender for smoothies.", whatsapp: "8765551237", instagram: "islandkitchen", location: "Negril", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 80 },
+            { id: 5, name: "JAM Beauty", category: "Beauty & Personal Care", productName: "Coconut Oil Soap", description: "Natural coconut oil soap.", whatsapp: "8765551238", instagram: "jambbeauty", location: "Portmore", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 110 },
+            { id: 6, name: "Carving Creations", category: "Crafts & Gifts", productName: "Wood Carving", description: "Handcrafted wood carvings.", whatsapp: "8765551239", instagram: "carvingcreations", location: "Mandeville", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 130 },
+            { id: 7, name: "Healthy Vibes", category: "Health & Wellness", productName: "Organic Spices", description: "Fresh organic spices.", whatsapp: "8765551240", instagram: "healthyvibesja", location: "St. Ann", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 95 },
+            { id: 8, name: "FixIt Services", category: "Services", productName: "Phone Repair", description: "Fast phone repair services.", whatsapp: "8765551241", instagram: "fixitservices", location: "Spanish Town", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 85 },
+            { id: 9, name: "Little Tykes", category: "Baby & Kids", productName: "Baby Bottles", description: "Safe baby bottles.", whatsapp: "8765551242", instagram: "littletykesja", location: "May Pen", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 75 },
+            { id: 10, name: "JAM Tours", category: "Tourism & Souvenirs", productName: "Rasta Hat", description: "Authentic Rasta hats for tourists.", whatsapp: "8765551243", instagram: "jamtours", location: "Falmouth", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 140 },
+            { id: 11, name: "Spicy Delights", category: "Food & Drinks", productName: "Jerk Seasoning", description: "Homemade jerk seasoning.", whatsapp: "8765551244", instagram: "spicydelights", location: "Kingston", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 115 },
+            { id: 12, name: "Reggae Wear", category: "Fashion & Accessories", productName: "Reggae Jacket", description: "Stylish reggae jackets.", whatsapp: "8765551245", instagram: "reggaewear", location: "Ocho Rios", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 105 },
+            { id: 13, name: "Gadget Guru", category: "Tech & Electronics", productName: "Smartwatch", description: "Affordable smartwatches.", whatsapp: "8765551246", instagram: "gadgetguruja", location: "Montego Bay", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 70 },
+            { id: 14, name: "Home Essentials", category: "Home & Kitchen", productName: "Air Fryer", description: "Compact air fryer for meals.", whatsapp: "8765551247", instagram: "homeessentialsja", location: "Negril", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 65 },
+            { id: 15, name: "Glow JA", category: "Beauty & Personal Care", productName: "Shea Butter", description: "Natural shea butter lotion.", whatsapp: "8765551248", instagram: "glowja", location: "Portmore", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 125 },
+            { id: 16, name: "Crafty Hands", category: "Crafts & Gifts", productName: "Beaded Necklace", description: "Handmade beaded necklaces.", whatsapp: "8765551249", instagram: "craftyhandsja", location: "Mandeville", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 135 },
+            { id: 17, name: "Fit Life", category: "Health & Wellness", productName: "Yoga Mats", description: "Eco-friendly yoga mats.", whatsapp: "8765551250", instagram: "fitlifeja", location: "St. Ann", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 90 },
+            { id: 18, name: "Quick Fixes", category: "Services", productName: "Appliance Repair", description: "Reliable appliance repairs.", whatsapp: "8765551251", instagram: "quickfixesja", location: "Spanish Town", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 80 },
+            { id: 19, name: "Tiny Tots", category: "Baby & Kids", productName: "Diapers", description: "Premium baby diapers.", whatsapp: "8765551252", instagram: "tinytotsja", location: "May Pen", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 60 },
+            { id: 20, name: "Island Souvenirs", category: "Tourism & Souvenirs", productName: "Coffee Mug", description: "Jamaican coffee mugs.", whatsapp: "8765551253", instagram: "islandsouvenirs", location: "Falmouth", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 145 },
+            { id: 21, name: "Patty Palace", category: "Food & Drinks", productName: "Beef Patties", description: "Delicious beef patties.", whatsapp: "8765551254", instagram: "pattypalace", location: "Kingston", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 100 },
+            { id: 22, name: "JAM Style", category: "Fashion & Accessories", productName: "Sunglasses", description: "Trendy sunglasses.", whatsapp: "8765551255", instagram: "jamstyle", location: "Ocho Rios", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 110 },
+            { id: 23, name: "Tech Savvy", category: "Tech & Electronics", productName: "Phone Charger", description: "Fast-charging phone chargers.", whatsapp: "8765551256", instagram: "techsavvyja", location: "Montego Bay", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 85 },
+            { id: 24, name: "Kitchen Kings", category: "Home & Kitchen", productName: "Electric Kettle", description: "Stylish electric kettle.", whatsapp: "8765551257", instagram: "kitchenkings", location: "Negril", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 75 },
+            { id: 25, name: "Pure Glow", category: "Beauty & Personal Care", productName: "Face Mask", description: "Natural face masks.", whatsapp: "8765551258", instagram: "pureglowja", location: "Portmore", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 120 },
+            { id: 26, name: "Artisan Alley", category: "Crafts & Gifts", productName: "Painted Canvas", description: "Hand-painted Jamaican art.", whatsapp: "8765551259", instagram: "artisinalley", location: "Mandeville", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 130 },
+            { id: 27, name: "Wellness Way", category: "Health & Wellness", productName: "Herbal Tea", description: "Organic herbal teas.", whatsapp: "8765551260", instagram: "wellnesswayja", location: "St. Ann", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 95 },
+            { id: 28, name: "Service Pros", category: "Services", productName: "Car Wash", description: "Professional car wash services.", whatsapp: "8765551261", instagram: "serviceprosja", location: "Spanish Town", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 70 },
+            { id: 29, name: "Baby Bliss", category: "Baby & Kids", productName: "Toy Set", description: "Safe toy sets for kids.", whatsapp: "8765551262", instagram: "babyblissja", location: "May Pen", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 65 },
             { id: 30, name: "JAM Treasures", category: "Tourism & Souvenirs", productName: "Wooden Statues", description: "Unique wooden statues.", whatsapp: "8765551263", instagram: "jamtreasures", location: "Falmouth", displayPhoto: "https://via.placeholder.com/150", productPhoto: "https://via.placeholder.com/150", views: 150 }
         ];
 
@@ -474,6 +498,11 @@
             const displayPhoto = URL.createObjectURL(document.getElementById('bizDisplayPhoto').files[0]);
             const productPhoto = URL.createObjectURL(document.getElementById('bizProductPhoto').files[0]);
             const views = 0;
+
+            if (!name || !category || !productName || !description || !whatsapp || !instagram || !location || !displayPhoto || !productPhoto) {
+                alert("Please fill out all required fields, including photos.");
+                return;
+            }
 
             const newBusiness = { id, name, category, productName, description, whatsapp, instagram, location, displayPhoto, productPhoto, views };
             businesses.push(newBusiness);
