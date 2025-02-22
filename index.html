@@ -67,7 +67,7 @@
             background: #ff6b6b;
         }
         .filters {
-            display: none; /* Hidden by default */
+            display: none;
             margin: 20px 0;
             padding: 15px;
             background: rgba(255, 255, 255, 0.95);
@@ -227,18 +227,74 @@
         }
         .form-section {
             background: rgba(255, 255, 255, 0.95);
-            padding: 25px;
+            padding: 30px;
             margin: 20px 0;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .form-section h2 {
+            color: #ff6b6b;
+            font-size: 2em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .form-section p {
+            color: #2c3e50;
+            font-size: 1.1em;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        .form-section label {
+            display: block;
+            margin: 15px 0 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        .form-section input, .form-section select, .form-section textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            box-sizing: border-box;
+            background: #fafafa;
+            font-size: 1em;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .form-section input:focus, .form-section select:focus, .form-section textarea:focus {
+            border-color: #4ecdc4;
+            box-shadow: 0 0 10px rgba(78, 205, 196, 0.3);
+            outline: none;
+        }
+        .form-section button {
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+            margin-top: 15px;
+        }
+        .form-section button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
         }
         .discount-message {
             color: #ff6b6b;
             font-weight: bold;
             margin-top: 15px;
             background: #fff5f5;
-            padding: 10px;
+            padding: 12px;
             border-radius: 6px;
             display: none;
         }
@@ -308,10 +364,10 @@
         <!-- Business Sign-Up Section (Hidden) -->
         <div class="form-section" id="business-signup">
             <h2>Add Your Business</h2>
-            <p>Showcase your products and reach more customers—free!</p>
+            <p>Showcase your vibrant Jamaican business and connect with customers—join for free today!</p>
             <form id="businessForm">
                 <label>Business Name:</label>
-                <input type="text" id="bizName" required>
+                <input type="text" id="bizName" required placeholder="Enter your business name">
                 <label>Category:</label>
                 <select id="bizCategory" required>
                     <option value="">Select a Category</option>
@@ -327,15 +383,15 @@
                     <option value="Tourism & Souvenirs">Tourism & Souvenirs</option>
                 </select>
                 <label>Featured Product Name:</label>
-                <input type="text" id="bizProductName" required>
+                <input type="text" id="bizProductName" required placeholder="Name your top product or service">
                 <label>Description:</label>
-                <textarea id="bizDescription" required></textarea>
+                <textarea id="bizDescription" required placeholder="Describe your business and offerings (max 200 chars)"></textarea>
                 <label>WhatsApp Number (e.g., 8765551234):</label>
-                <input type="text" id="bizWhatsApp" required>
+                <input type="tel" id="bizWhatsApp" required placeholder="Enter WhatsApp number">
                 <label>Instagram Handle (e.g., tasteofmobay):</label>
-                <input type="text" id="bizInstagram" required>
+                <input type="text" id="bizInstagram" required placeholder="Enter Instagram handle">
                 <label>Location:</label>
-                <input type="text" id="bizLocation" required>
+                <input type="text" id="bizLocation" required placeholder="Enter your city or parish">
                 <label>Display Photo (logo/storefront):</label>
                 <input type="file" id="bizDisplayPhoto" accept="image/*" required>
                 <label>Featured Product Photo:</label>
@@ -347,12 +403,12 @@
         <!-- User Sign-Up Section (Hidden) -->
         <div class="form-section" id="user-signup">
             <h2>Get Your Discount Code & Updates</h2>
-            <p>Sign up now and enjoy 10% off your next purchase!</p>
+            <p>Sign up now and enjoy 10% off your next purchase from Jamaican businesses!</p>
             <form id="userForm">
                 <label>Name:</label>
-                <input type="text" id="userName" required>
+                <input type="text" id="userName" required placeholder="Enter your full name">
                 <label>Email:</label>
-                <input type="email" id="userEmail" required>
+                <input type="email" id="userEmail" required placeholder="Enter your email address">
                 <label><input type="checkbox" id="emailUpdates"> Get Email Updates</label>
                 <button type="submit">Claim Your Code</button>
             </form>
